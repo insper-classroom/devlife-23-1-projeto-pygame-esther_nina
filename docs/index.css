@@ -1,10 +1,23 @@
 * {
     margin: 0;
-    padding: 0;
+    padding: 30;
     box-sizing: border-box;
   }
   
   /* Estilos Gerais */
+  header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: gray;
+    padding: 20px 20px;
+  }
+  nav {
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+  }
   body {
     font-family: 'Press Start 2P';
     font-size: 16px;
