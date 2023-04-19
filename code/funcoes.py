@@ -36,7 +36,7 @@ class Jogo:
         self.bolinha_tempo = hm
 
         # Calcula a velocidade alterada pela aceleração (gravidade) e o tempo
-        self.bolinha_vel[1] += 400 * delta
+        self.bolinha_vel[1] += 350 * delta
 
         # Com isso, calcula as novas posições
         self.bolinha_pos[0] += self.bolinha_vel[0] * delta
@@ -78,6 +78,9 @@ class Jogo:
             game = self.atualiza_estado()
             if game:
                 self.desenha()
+            
+class Plataformas:
+        def __init__(self):
             
 
         return
