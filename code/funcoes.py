@@ -126,10 +126,11 @@ class Plataformas:
         width =  self.c
 
     def colisao(self, largura, altura, cx, cy, raio): #esther comecei a mexer numa funcao de colisao da nossa bolinha e retangulo, to indo embora agora entao vou comitar soh pra c ter uma ideia (nao acabei ainda)
-        self.coordenadas_comeco[0] #x
-        self.coordenadas_comeco[1] #y
+        x = self.coordenadas_comeco[0] #x
+        y = self.coordenadas_comeco[1] #y
         largura = abs(self.coordenadas_final[0] -  self.coordenadas_comeco[0])
         altura = abs(self.coordenadas_final[1] -  self.coordenadas_comeco[1])
+        rect =  pygame.Rect(x,y,largura,altura)
         if r1(0) < r2(0) + r2(2) and r1(0) + r1(2) > r2(0) and r1(1) < r2(1) + r2(3) and r1(3) + r1(0) > r2(1):
             return True
         else:
