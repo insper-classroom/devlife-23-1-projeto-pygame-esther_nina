@@ -9,6 +9,8 @@ class Jogo:
         self.cor_fundo =  (22, 47, 109)
         self.bolinha = (150, 490, 5)
         self.cor_bolinha = (120, 148, 204)
+        self.cor_plat = (7, 15, 33)
+        self.clicou =  False
         # Calcular a posição do jogador após pingar
         self.bolinha_pos = [240, 50]
         self.bolinha_vel = [100, 150]
@@ -17,10 +19,8 @@ class Jogo:
         self.bloco_img =  pygame.transform.scale(pygame.image.load('bloquinho.png'), (50,50))
         self.pedrinha_img = pygame.transform.scale(pygame.image.load('pedrinha.png'),(40,40))    
         self.window = pygame.display.set_mode(self.tamanho_tela)
+        self.plataformas_anteriores = []
 
-        # jog = Jogador()
-        # g.add(jog)
-        # g.update()
 
     def cria_pedras(self):
         pos_pedras = [1,51,101,151,201,251,301,351,401,451,500]
@@ -28,6 +28,7 @@ class Jogo:
         x = random.choice(pos_pedras)
         self.pedras.add((x,1))
         print(self.pedras())
+
         
     def bola_quica(self):
         # Intervalo de tempo
@@ -49,13 +50,37 @@ class Jogo:
             self.bolinha_vel[1] *= - 1 
 
     def atualiza_estado(self):
+        # self.plataformas =  Plataformas().atualiza_estado
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 return False
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                if evento.button == 1:
+                    self.coordenadas_comeco = pygame.mouse.get_pos()
+                    self.clicou = False
+
+                    # if self.coordenadas_comeco[0] < 50:
+                    #     self.coordenadas_comeco[0] = 50
+                    # elif self.coordenadas_comeco[0] > 450:
+                    #     self.coordenadas_comeco[0]= 450
+
+            if evento.type == pygame.MOUSEBUTTONUP:
+                if evento.button == 1:
+                    self.clicou =  True
+                    self.coordenadas_final = pygame.mouse.get_pos()
+                    
+                    # if self.coordenadas_final[0] < 50:
+                    #     self.coordenadas_final[0] = 50
+                    # elif self.coordenadas_final[0] > 450:
+                    #     self.coordenadas_final[0]= 450
+                        
+
+                   
         return True
 
     def desenha(self):
         self.window.fill(self.cor_fundo)
+
         # Desenha pedras paredes
         x = 0
         y = 0
@@ -69,8 +94,15 @@ class Jogo:
             self.window.blit(self.bloco_img, (450, y))
             y += 50
         self.bola_quica()
-        pygame.draw.circle(self.window, (255, 255, 255), self.bolinha_pos, 10)
+        pygame.draw.circle(self.window, (115, 209, 208), self.bolinha_pos, 10)
+
+    #    Desenha plataformas
+        if self.clicou == True:
+            Plataformas(self.coordenadas_comeco, self.coordenadas_final)
+        Plataformas.desenha_plataforma(self.window)
         pygame.display.update()
+
+
 
     def game_loop(self):
         game = True
@@ -79,21 +111,19 @@ class Jogo:
             if game:
                 self.desenha()
             
-class Plataformas:
-    def __init__(self):
-        self.cor = (7, 15, 33)
 
-    def atualiza_estado(self):
-        for evento in pygame.event.get():
-            if evento.type == pygame.MOUSEBUTTONDOWN:
-                if evento.button == 1:
-                    self.coordenadas_comeco = pygame.mouse.get_pos()
-            elif evento.type == pygame.MOUSEBUTTONUP:
-                if evento.button == 1:
-                    self.coordenadas_final = pygame.mouse.get_pos()
-        return True
-    
-    def desenha_plataforma(self):
-        pygame.draw.polygon(self.window, self.cor, (self.coordenadas_comeco, self.coordenadas_final, (self.coordenadas_final[0], self.coordenadas_final[1] - 5), (self.coordenadas_comeco[0], self.coordenadas_comeco[1] - 5)))
+
+
+class Plataformas:
+    plataformas_anteriores = []
+    def __init__(self, coordenada_inicio, coordenada_final):
+        self.cor = (255, 255, 255)
+        self.coordenadas_comeco = coordenada_inicio
+        self.coordenadas_final = coordenada_final
+        Plataformas.plataformas_anteriores.append(self)
         
+    def desenha_plataforma( window):
+        # pygame.draw.polygon(self.window, self.cor, (self.coordenadas_comeco, self.coordenadas_final, (self.coordenadas_final[0], self.coordenadas_final[1] - 5), (self.coordenadas_comeco[0], self.coordenadas_comeco[1] - 5)))
+        for plataforma in Plataformas.plataformas_anteriores:
+            pygame.draw.polygon(window, plataforma.cor, (plataforma.coordenadas_comeco, plataforma.coordenadas_final, (plataforma.coordenadas_final[0], plataforma.coordenadas_final[1] - 3), (plataforma.coordenadas_comeco[0], plataforma.coordenadas_comeco[1] -3)))
 
