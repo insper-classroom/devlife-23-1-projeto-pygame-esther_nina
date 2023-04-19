@@ -28,7 +28,6 @@ class Jogo:
         x = random.choice(pos_pedras)
         self.pedras.add((x,1))
         print(self.pedras())
-
         
     def bola_quica(self):
         # Intervalo de tempo
@@ -58,27 +57,26 @@ class Jogo:
                 if evento.button == 1:
                     self.coordenadas_comeco = pygame.mouse.get_pos()
                     self.pos_inicial_linha = [self.coordenadas_comeco[0], self.coordenadas_comeco[1]]
+                    # Recomeça o "clicou" para que as linhas sejam criadas separadamente
                     self.clicou = False
-
-
+                    # Impedir que a bolinha entre dentro da parede 
                     if self.pos_inicial_linha[0] < 50:
                         self.pos_inicial_linha[0] = 50
                     elif self.pos_inicial_linha[0] > 450:
-                        self.pos_inicial_linha[0]= 450
+                        self.pos_inicial_linha[0] = 450
 
             if evento.type == pygame.MOUSEBUTTONUP:
                 if evento.button == 1:
+                    # Apenas após o mouse é solto que a linha pode ser desenhada
                     self.clicou =  True
                     self.coordenadas_final = pygame.mouse.get_pos()
                     self.pos_final_linha = [self.coordenadas_final[0], self.coordenadas_final[1]]
-
+                    # Impedir (novamente) que a bolinha entre dentro da parede 
                     if self.pos_final_linha[0] < 50:
                         self.pos_final_linha[0] = 50
                     elif self.pos_final_linha[0] > 450:
-                        self.pos_final_linha[0]= 450
+                        self.pos_final_linha[0] = 450
                         
-
-                   
         return True
 
     def desenha(self):
@@ -105,8 +103,6 @@ class Jogo:
         Plataformas.desenha_plataforma(self.window)
         pygame.display.update()
 
-
-
     def game_loop(self):
         game = True
         while game:
@@ -116,22 +112,30 @@ class Jogo:
             
 
 
-
 class Plataformas:
     plataformas_anteriores = []
     rect_plataformas = []
+
     def __init__(self, coordenada_inicio, coordenada_final):
         self.cor = (255, 255, 255)
         self.coordenadas_comeco = coordenada_inicio
         self.coordenadas_final = coordenada_final
         Plataformas.plataformas_anteriores.append(self)
-    
 
     def cria_rect(self):
         width =  self.c
+
+    def colisao(self, largura, altura, cx, cy, raio): #esther comecei a mexer numa funcao de colisao da nossa bolinha e retangulo, to indo embora agora entao vou comitar soh pra c ter uma ideia (nao acabei ainda)
+        self.coordenadas_comeco[0] #x
+        self.coordenadas_comeco[1] #y
+        largura = abs(self.coordenadas_final[0] -  self.coordenadas_comeco[0])
+        altura = abs(self.coordenadas_final[1] -  self.coordenadas_comeco[1])
+        if r1(0) < r2(0) + r2(2) and r1(0) + r1(2) > r2(0) and r1(1) < r2(1) + r2(3) and r1(3) + r1(0) > r2(1):
+            return True
+        else:
+            return False
         
     def desenha_plataforma( window):
         # pygame.draw.polygon(self.window, self.cor, (self.coordenadas_comeco, self.coordenadas_final, (self.coordenadas_final[0], self.coordenadas_final[1] - 5), (self.coordenadas_comeco[0], self.coordenadas_comeco[1] - 5)))
         for plataforma in Plataformas.plataformas_anteriores:
             pygame.draw.polygon(window, plataforma.cor, (plataforma.coordenadas_comeco, plataforma.coordenadas_final, (plataforma.coordenadas_final[0], plataforma.coordenadas_final[1] - 3), (plataforma.coordenadas_comeco[0], plataforma.coordenadas_comeco[1] -3)))
-
