@@ -80,9 +80,20 @@ class Jogo:
                 self.desenha()
             
 class Plataformas:
-        def __init__(self):
-            
+    def __init__(self):
+        self.cor = (7, 15, 33)
 
-        return
+    def atualiza_estado(self):
+        for evento in pygame.event.get():
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                if evento.button == 1:
+                    self.coordenadas_comeco = pygame.mouse.get_pos()
+            elif evento.type == pygame.MOUSEBUTTONUP:
+                if evento.button == 1:
+                    self.coordenadas_final = pygame.mouse.get_pos()
+        return True
     
+    def desenha_plataforma(self):
+        pygame.draw.polygon(self.window, self.cor, (self.coordenadas_comeco, self.coordenadas_final, (self.coordenadas_final[0], self.coordenadas_final[1] - 5), (self.coordenadas_comeco[0], self.coordenadas_comeco[1] - 5)))
         
+
