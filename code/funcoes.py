@@ -57,22 +57,25 @@ class Jogo:
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 if evento.button == 1:
                     self.coordenadas_comeco = pygame.mouse.get_pos()
+                    self.pos_inicial_linha = [self.coordenadas_comeco[0], self.coordenadas_comeco[1]]
                     self.clicou = False
 
-                    # if self.coordenadas_comeco[0] < 50:
-                    #     self.coordenadas_comeco[0] = 50
-                    # elif self.coordenadas_comeco[0] > 450:
-                    #     self.coordenadas_comeco[0]= 450
+
+                    if self.pos_inicial_linha[0] < 50:
+                        self.pos_inicial_linha[0] = 50
+                    elif self.pos_inicial_linha[0] > 450:
+                        self.pos_inicial_linha[0]= 450
 
             if evento.type == pygame.MOUSEBUTTONUP:
                 if evento.button == 1:
                     self.clicou =  True
                     self.coordenadas_final = pygame.mouse.get_pos()
-                    
-                    # if self.coordenadas_final[0] < 50:
-                    #     self.coordenadas_final[0] = 50
-                    # elif self.coordenadas_final[0] > 450:
-                    #     self.coordenadas_final[0]= 450
+                    self.pos_final_linha = [self.coordenadas_final[0], self.coordenadas_final[1]]
+
+                    if self.pos_final_linha[0] < 50:
+                        self.pos_final_linha[0] = 50
+                    elif self.pos_final_linha[0] > 450:
+                        self.pos_final_linha[0]= 450
                         
 
                    
@@ -98,7 +101,7 @@ class Jogo:
 
     #    Desenha plataformas
         if self.clicou == True:
-            Plataformas(self.coordenadas_comeco, self.coordenadas_final)
+            Plataformas(self.pos_inicial_linha, self.pos_final_linha)
         Plataformas.desenha_plataforma(self.window)
         pygame.display.update()
 
@@ -116,11 +119,16 @@ class Jogo:
 
 class Plataformas:
     plataformas_anteriores = []
+    rect_plataformas = []
     def __init__(self, coordenada_inicio, coordenada_final):
         self.cor = (255, 255, 255)
         self.coordenadas_comeco = coordenada_inicio
         self.coordenadas_final = coordenada_final
         Plataformas.plataformas_anteriores.append(self)
+    
+
+    def cria_rect(self):
+        width =  self.c
         
     def desenha_plataforma( window):
         # pygame.draw.polygon(self.window, self.cor, (self.coordenadas_comeco, self.coordenadas_final, (self.coordenadas_final[0], self.coordenadas_final[1] - 5), (self.coordenadas_comeco[0], self.coordenadas_comeco[1] - 5)))
