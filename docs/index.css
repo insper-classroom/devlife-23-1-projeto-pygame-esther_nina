@@ -1,0 +1,52 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Estilos Gerais */
+  body {
+    font-family: 'Press Start 2P';
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+    background-color: #fff;
+  }
+  
+  a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+  
+  /* Estilos de Layout */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+  
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .col {
+    flex-basis: 100%;
+  }
+  
+  @media (min-width: 768px) {
+    .col-sm {
+      flex-basis: calc(100% / 12 * 6);
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .col-md {
+      flex-basis: calc(100% / 12 * 8);
+    }
+  }
