@@ -40,7 +40,6 @@ class Jogo:
 
         if Plataformas.colidiu(self.bolinha_pos):
             self.bolinha_vel[1] *= - 1
-            self.bolinha_vel[0] *= -1
 
         # Com isso, calcula as novas posições
         self.bolinha_pos[0] += self.bolinha_vel[0] * delta
@@ -71,7 +70,6 @@ class Jogo:
                     elif self.pos_inicial_linha[1] > 650:
                         self.pos_inicial_linha[1] =  650
         
-
             if evento.type == pygame.MOUSEBUTTONUP:
                 if evento.button == 1:
                     # Apenas após o mouse é solto que a linha pode ser desenhada
@@ -144,7 +142,7 @@ class Plataformas:
             c = - (a * p.coordenadas_comeco[0] + p.coordenadas_comeco[1])
             dist = abs(a * bola_pos[0] + b * bola_pos[1] + c)/ math.sqrt(a ** 2 + b ** 2)
             
-            if dist <= raio :
+            if dist <= rauio:
                 return True
         return False
 
