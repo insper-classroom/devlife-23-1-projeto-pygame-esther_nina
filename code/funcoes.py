@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 
 class Jogo:
     def __init__(self):
@@ -36,6 +37,9 @@ class Jogo:
 
         # Calcula a velocidade alterada pela aceleração (gravidade) e o tempo
         self.bolinha_vel[1] += 350 * delta
+
+        if Plataformas.colidiu(self.bolinha_pos):
+            self.bolinha_vel[1] *= - 1
 
         # Com isso, calcula as novas posições
         self.bolinha_pos[0] += self.bolinha_vel[0] * delta
@@ -120,7 +124,7 @@ class Plataformas:
         self.coordenadas_comeco = coordenada_inicio
         self.coordenadas_final = coordenada_final
         Plataformas.plataformas_anteriores.append(self)
-
+    '''
     def colisao(self, largura, altura, cx, cy): 
         #rect =  pygame.Rect(x, y, largura, altura)
         self.rx = self.coordenadas_comeco[0] 
@@ -130,17 +134,30 @@ class Plataformas:
         self.raio = 10
         largura = abs(self.coordenadas_final[0] -  self.coordenadas_comeco[0])
         altura = 3
-        if r1(0) < r2(0) + r2(2) and r1(0) + r1(2) > r2(0) and r1(1) < r2(1) + r2(3) and r1(3) + r1(0) > r2(1):
+        if self.coordenadas_comeco[0] <= self.cx <= self.coordenadas_final[0] and self.coordenadas_comeco[1] <= (self.cy + self.raio) <= self.coordenadas_final[1]:
             return True
         else:
             return False
-        
+        '''
     def desenha_plataforma( window):
         # pygame.draw.polygon(self.window, self.cor, (self.coordenadas_comeco, self.coordenadas_final, (self.coordenadas_final[0], self.coordenadas_final[1] - 5), (self.coordenadas_comeco[0], self.coordenadas_comeco[1] - 5)))
         for plataforma in Plataformas.plataformas_anteriores:
             pygame.draw.polygon(window, plataforma.cor, (plataforma.coordenadas_comeco, plataforma.coordenadas_final, (plataforma.coordenadas_final[0], plataforma.coordenadas_final[1] - 3), (plataforma.coordenadas_comeco[0], plataforma.coordenadas_comeco[1] -3)))
 
-'''def rect_distance(b_side_x,b_side_y,angle_b_p,b_angle=0):
+    def colidiu(bola_pos):
+        for p in Plataformas.plataformas_anteriores:
+            rauio = 10
+            a = -((p.coordenadas_comeco[1] - p.coordenadas_final[1])/(p.coordenadas_comeco[0] - p.coordenadas_final[0]))
+            b = 1
+            c = -(a * p.coordenadas_comeco[0] + p.coordenadas_comeco[1])
+            dist = abs(a*bola_pos[0] + b*bola_pos[1] + c)/ math.sqrt(a**2 + b**2)
+            
+            if dist <= rauio:
+                return True
+        return False
+
+
+def rect_distance(b_side_x,b_side_y,angle_b_p,b_angle=0):
    w1 = angle_b_p - b_angle
    w1 %= 360
    w_b = round(math.atan(b_side_x/b_side_y)/math.pi*180)
@@ -148,4 +165,5 @@ class Plataformas:
       distance = round(b_side_y/2/math.sin(w1*math.pi/180))
    else:
       distance = round(b_side_x/2/math.cos(w1*math.pi/180))
-   return abs(distance)'''
+   return abs(distance) 
+
