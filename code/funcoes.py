@@ -39,8 +39,9 @@ class Jogo:
         self.bolinha_vel[1] += 350 * delta
 
         if Plataformas.colidiu(self.bolinha_pos):
-            self.bolinha_vel[1] *= - 1
-            self.bolinha_vel[0] *= -1
+            if Plataformas.verifica_angulo =='flip':
+                self.bolinha_vel[1] *= - 1
+                self.bolinha_vel[0] *= -1
 
         # Com isso, calcula as novas posições
         self.bolinha_pos[0] += self.bolinha_vel[0] * delta
@@ -109,6 +110,7 @@ class Jogo:
     #    Desenha plataformas
         if self.clicou == True:
             Plataformas(self.pos_inicial_linha, self.pos_final_linha)
+        Plataformas.verifica_linhas()
         Plataformas.desenha_plataforma(self.window)
         pygame.display.update()
 
@@ -132,9 +134,9 @@ class Plataformas:
         Plataformas.plataformas_anteriores.append(self)
 
     def desenha_plataforma( window):
-    
+        
         for plataforma in Plataformas.plataformas_anteriores:
-            pygame.draw.polygon(window, plataforma.cor, (plataforma.coordenadas_comeco, plataforma.coordenadas_final, (plataforma.coordenadas_final[0], plataforma.coordenadas_final[1] - 3), (plataforma.coordenadas_comeco[0], plataforma.coordenadas_comeco[1] -3)))
+                pygame.draw.polygon(window, plataforma.cor, (plataforma.coordenadas_comeco, plataforma.coordenadas_final, (plataforma.coordenadas_final[0], plataforma.coordenadas_final[1] - 3), (plataforma.coordenadas_comeco[0], plataforma.coordenadas_comeco[1] -3)))
 
     def colidiu(bola_pos):
         for p in Plataformas.plataformas_anteriores:
@@ -148,6 +150,40 @@ class Plataformas:
                 return True
         return False
 
+    def verifica_linhas():
+        linhas = len(Plataformas.plataformas_anteriores)
+        if linhas >= 2:
+            del Plataformas.plataformas_anteriores[0]
 
+    def verifica_angulo(vel_bola):
+        for plataforma in Plataformas.plataformas_anteriores:
+            cateto_oposto = abs(plataforma.coordenadas_final[0] - plataforma.coordenadas_comeco[0])
+            cateto_adjacente = abs (plataforma.coordenadas_final[1] - plataforma.coordenadas_comeco[1])
+            tangente = cateto_oposto/cateto_adjacente
+            angulo_rad = math.atan(tangente)
+            angulo_grau = math.degrees(angulo_rad)
+            angulo_linha = 180 - (angulo_grau + 90)
+            if angulo_linha > 135:
+                return 'continua'
+            elif angulo_linha > 90 and angulo_linha< 135:
+                if vel_bola > 0:
+                    return 'flip'
+                else:
+                    return 'continua'
+
+            elif angulo_linha < 90 and angulo_linha > 45:
+                if vel_bola > 0:
+                    return 'continua'
+                else:
+                    return 'flip'
+            else:
+                if vel_bola>0:
+                    return 'continua'
+                else:
+                    return 'flip'
+                # Arrumar pq o angulo nunca vai ser maior que 90 verificar sempre menos
+             
+        
+        
 
 
