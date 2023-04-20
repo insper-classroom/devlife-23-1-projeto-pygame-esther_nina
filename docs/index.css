@@ -7,59 +7,45 @@
   /* Estilos Gerais */
   header {
     display: flex;
-    flex-direction: row;
+    flex-direction: row ;
     justify-content: space-between;
     align-items: center;
-    background-color: gray;
+    background-color: blue;
     padding: 20px 20px;
   }
   nav {
     width: 200px;
     display: flex;
     justify-content: space-between;
+    background-color: gray;
   }
   body {
     font-family: 'Press Start 2P';
-    font-size: 16px;
+    font-size: 20px;
     line-height: 1.5;
     color: #fff;
     background-color: #fff;
   }
+
+  h1 {background-color: gray;
+      padding: 10px; 
+      ;}
   
   a {
-    color: #007bff;
+    color: #ffffff;
+    display: flex;
     text-decoration: none;
+    background-color: gray;
+    justify-content: space-evenly;
+    flex-direction: row;
   }
   
   a:hover {
-    color: #0056b3;
-    text-decoration: underline;
+    color: white ;
+    text-decoration: underline black;
   }
-  
-  /* Estilos de Layout */
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 15px;
+  .sobre_jogo{
+    margin-left: 50%;
+    padding: 10px
   }
-  
-  .row {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-  .col {
-    flex-basis: 100%;
-  }
-  
-  @media (min-width: 768px) {
-    .col-sm {
-      flex-basis: calc(100% / 12 * 6);
-    }
-  }
-  
-  @media (min-width: 992px) {
-    .col-md {
-      flex-basis: calc(100% / 12 * 8);
-    }
-  }
+ 
