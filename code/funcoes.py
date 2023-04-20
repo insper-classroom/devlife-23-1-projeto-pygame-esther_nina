@@ -157,13 +157,5 @@ class Plataformas:
         return False
 
 
-def rect_distance(b_side_x,b_side_y,angle_b_p,b_angle=0):
-   w1 = angle_b_p - b_angle
-   w1 %= 360
-   w_b = round(math.atan(b_side_x/b_side_y)/math.pi*180)
-   if (w1 > 90 - w_b and w1 < 90 + w_b) or (w1 > 270 - w_b and w1 < 270 + w_b):
-      distance = round(b_side_y/2/math.sin(w1*math.pi/180))
-   else:
-      distance = round(b_side_x/2/math.cos(w1*math.pi/180))
-   return abs(distance) 
+
 
