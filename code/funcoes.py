@@ -21,9 +21,8 @@ class Jogo:
         self.window = pygame.display.set_mode(self.tamanho_tela)
         self.plataformas_anteriores = []
 
-
     def cria_pedras(self):
-        pos_pedras = [1,51,101,151,201,251,301,351,401,451,500]
+        pos_pedras = [1, 51, 101, 151, 201, 251, 301, 351, 401, 451, 500]
         self.pedras = pygame.sprite.Group()
         x = random.choice(pos_pedras)
         self.pedras.add((x,1))
@@ -111,7 +110,7 @@ class Jogo:
                 self.desenha()
             
 
-
+            
 class Plataformas:
     plataformas_anteriores = []
     rect_plataformas = []
@@ -122,15 +121,15 @@ class Plataformas:
         self.coordenadas_final = coordenada_final
         Plataformas.plataformas_anteriores.append(self)
 
-    def cria_rect(self):
-        width =  self.c
-
-    def colisao(self, largura, altura, cx, cy, raio): #esther comecei a mexer numa funcao de colisao da nossa bolinha e retangulo, to indo embora agora entao vou comitar soh pra c ter uma ideia (nao acabei ainda)
-        x = self.coordenadas_comeco[0] #x
-        y = self.coordenadas_comeco[1] #y
+    def colisao(self, largura, altura, cx, cy): 
+        #rect =  pygame.Rect(x, y, largura, altura)
+        self.rx = self.coordenadas_comeco[0] 
+        self.ry = self.coordenadas_comeco[1] 
+        self.cx = self.bolinha_pos[0]
+        self.cy = self.bolinha_pos[1]
+        self.raio = 10
         largura = abs(self.coordenadas_final[0] -  self.coordenadas_comeco[0])
-        altura = abs(self.coordenadas_final[1] -  self.coordenadas_comeco[1])
-        rect =  pygame.Rect(x,y,largura,altura)
+        altura = 3
         if r1(0) < r2(0) + r2(2) and r1(0) + r1(2) > r2(0) and r1(1) < r2(1) + r2(3) and r1(3) + r1(0) > r2(1):
             return True
         else:
@@ -140,3 +139,13 @@ class Plataformas:
         # pygame.draw.polygon(self.window, self.cor, (self.coordenadas_comeco, self.coordenadas_final, (self.coordenadas_final[0], self.coordenadas_final[1] - 5), (self.coordenadas_comeco[0], self.coordenadas_comeco[1] - 5)))
         for plataforma in Plataformas.plataformas_anteriores:
             pygame.draw.polygon(window, plataforma.cor, (plataforma.coordenadas_comeco, plataforma.coordenadas_final, (plataforma.coordenadas_final[0], plataforma.coordenadas_final[1] - 3), (plataforma.coordenadas_comeco[0], plataforma.coordenadas_comeco[1] -3)))
+
+'''def rect_distance(b_side_x,b_side_y,angle_b_p,b_angle=0):
+   w1 = angle_b_p - b_angle
+   w1 %= 360
+   w_b = round(math.atan(b_side_x/b_side_y)/math.pi*180)
+   if (w1 > 90 - w_b and w1 < 90 + w_b) or (w1 > 270 - w_b and w1 < 270 + w_b):
+      distance = round(b_side_y/2/math.sin(w1*math.pi/180))
+   else:
+      distance = round(b_side_x/2/math.cos(w1*math.pi/180))
+   return abs(distance)'''
