@@ -144,7 +144,7 @@ class Plataformas:
             c = -(a * p.coordenadas_comeco[0] + p.coordenadas_comeco[1])
             dist = abs(a*bola_pos[0] + b*bola_pos[1] + c)/ math.sqrt(a**2 + b**2)
             
-            if dist <= raio and bola_pos[0] < p.coordenadas_final[0] and bola_pos[0] > p.coordenadas_comeco[0] :
+            if dist <= raio:
                 return True
         return False
 
