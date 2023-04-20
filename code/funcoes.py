@@ -40,6 +40,7 @@ class Jogo:
 
         if Plataformas.colidiu(self.bolinha_pos):
             self.bolinha_vel[1] *= - 1
+            self.bolinha_vel[0] *= -1
 
         # Com isso, calcula as novas posições
         self.bolinha_pos[0] += self.bolinha_vel[0] * delta
@@ -67,6 +68,9 @@ class Jogo:
                         self.pos_inicial_linha[0] = 50
                     elif self.pos_inicial_linha[0] > 450:
                         self.pos_inicial_linha[0] = 450
+                    elif self.pos_inicial_linha[1] > 650:
+                        self.pos_inicial_linha[1] =  650
+        
 
             if evento.type == pygame.MOUSEBUTTONUP:
                 if evento.button == 1:
@@ -79,6 +83,8 @@ class Jogo:
                         self.pos_final_linha[0] = 50
                     elif self.pos_final_linha[0] > 450:
                         self.pos_final_linha[0] = 450
+                    elif self.pos_final_linha[1] > 650:
+                        self.pos_final_linha[1] =  650
                         
         return True
 
@@ -124,35 +130,21 @@ class Plataformas:
         self.coordenadas_comeco = coordenada_inicio
         self.coordenadas_final = coordenada_final
         Plataformas.plataformas_anteriores.append(self)
-    '''
-    def colisao(self, largura, altura, cx, cy): 
-        #rect =  pygame.Rect(x, y, largura, altura)
-        self.rx = self.coordenadas_comeco[0] 
-        self.ry = self.coordenadas_comeco[1] 
-        self.cx = self.bolinha_pos[0]
-        self.cy = self.bolinha_pos[1]
-        self.raio = 10
-        largura = abs(self.coordenadas_final[0] -  self.coordenadas_comeco[0])
-        altura = 3
-        if self.coordenadas_comeco[0] <= self.cx <= self.coordenadas_final[0] and self.coordenadas_comeco[1] <= (self.cy + self.raio) <= self.coordenadas_final[1]:
-            return True
-        else:
-            return False
-        '''
+
     def desenha_plataforma( window):
-        # pygame.draw.polygon(self.window, self.cor, (self.coordenadas_comeco, self.coordenadas_final, (self.coordenadas_final[0], self.coordenadas_final[1] - 5), (self.coordenadas_comeco[0], self.coordenadas_comeco[1] - 5)))
+    
         for plataforma in Plataformas.plataformas_anteriores:
             pygame.draw.polygon(window, plataforma.cor, (plataforma.coordenadas_comeco, plataforma.coordenadas_final, (plataforma.coordenadas_final[0], plataforma.coordenadas_final[1] - 3), (plataforma.coordenadas_comeco[0], plataforma.coordenadas_comeco[1] -3)))
 
     def colidiu(bola_pos):
         for p in Plataformas.plataformas_anteriores:
-            rauio = 10
+            raio = 10
             a = -((p.coordenadas_comeco[1] - p.coordenadas_final[1])/(p.coordenadas_comeco[0] - p.coordenadas_final[0]))
             b = 1
             c = -(a * p.coordenadas_comeco[0] + p.coordenadas_comeco[1])
             dist = abs(a*bola_pos[0] + b*bola_pos[1] + c)/ math.sqrt(a**2 + b**2)
             
-            if dist <= rauio:
+            if dist <= raio :
                 return True
         return False
 
