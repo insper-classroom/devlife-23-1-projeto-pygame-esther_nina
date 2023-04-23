@@ -184,6 +184,7 @@ class Plataformas:
                 # Arrumar pq o angulo nunca vai ser maior que 90 verificar sempre menos
              
         
-        
-
+class TelaInicio:
+    def __init__(self):
+        self.imagem_fundo = pygame.image.load('minerando 2.jpeg')
 
