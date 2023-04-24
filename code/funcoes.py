@@ -250,4 +250,44 @@ class TelaInicio:
             inicio = self.atualiza_tela()
             if inicio:
                 self.desenha_tela_inicio()
-            
+
+
+class Coins(pygame.sprite.Sprite):
+	def __init__(self):
+		self.animation = [pygame.image.load('assets/coin1.png') , pygame.image.load('assets/coin2.png'), 
+                    pygame.image.load('assets/coin3.png'), pygame.image.load('assets/coin4.png'), 
+                    pygame.image.load('assets/coin5.png'), 	pygame.image.load('assets/coin6.png'), 
+                    pygame.image.load('assets/coin7.png'), pygame.image.load('assets/coin8.png')]
+		self.frame = 0
+		self.coin_atual = self.animation[self.frame]
+        self.rect = self.coin_atual.get_rect()
+        self.rect.x = self.rect.x
+        self.rect.y = y
+        self.posicoes = []
+
+
+
+	def atualiza_coin(self):
+        self.frame += 1
+        if self.frame >= len(self.animation):
+            self.frame_index = 0
+        self.coin_atual = self.animation[self.frame]
+
+
+
+
+
+	def desenha_coin(self, window):
+		for i in range(10):
+			x = random.randint(50,650)
+			y = random.randint(0,450)
+			self.posicoes.append((x,y))
+			
+		grupo = pygame.sprite.Group()
+		grupo.add(sprite)
+
+    		# Update sprites
+    	# my_group.update()
+		for moeda in self.posicoes:
+			window.blit(self.coin_atual, moeda)
+    pygame.display.flip()
