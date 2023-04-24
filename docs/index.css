@@ -38,7 +38,7 @@
     padding: 20px;
     display: flex;
     text-decoration: none;
-    background-color: transparent;
+    background-color: #0D101F;
     justify-content: space-evenly;
     flex-direction: row;
   }
