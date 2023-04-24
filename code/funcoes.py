@@ -4,17 +4,15 @@ import math
 
 ROXO_ESCURO = (29, 0, 33)
 AZUL_CLARINHO = (200, 245, 247)
+AZUL_BOLA = (115, 209, 208)
 ROSA = (228, 97, 128)
+AZUL_FUNDO = (22, 47, 109)
 
 class Jogo:
     def __init__(self):
         pygame.init()
         # Set tamanhos e cores
         self.tamanho_tela = [500, 700]
-        self.cor_fundo =  (22, 47, 109)
-        self.bolinha = (150, 490, 5)
-        self.cor_bolinha = (120, 148, 204)
-        self.cor_plat = (7, 15, 33)
         self.clicou =  False
         self.pos_inicial_linha = (0, 0)
         self.pos_final_linha = (0, 0)
@@ -63,7 +61,9 @@ class Jogo:
             self.bolinha_vel[1] *= - 1 
 
     def atualiza_estado(self):
-        # self.plataformas =  Plataformas().atualiza_estado
+        relogio = pygame.time.get_ticks()
+        self.tempo = relogio / 1000
+        
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 return False
@@ -105,7 +105,7 @@ class Jogo:
         return True
 
     def desenha(self):
-        self.window.fill(self.cor_fundo)
+        self.window.fill(AZUL_FUNDO)
         # Desenha pedras paredes
         x = 0
         y = 0
@@ -125,7 +125,7 @@ class Jogo:
         else:
             inicio = self.fonte.render('Aperte espaco para comecar', self.fonte, (5, 14, 34))
             self.window.blit(inicio, (78, 200))
-        pygame.draw.circle(self.window, (115, 209, 208), self.bolinha_pos, 10)
+        pygame.draw.circle(self.window, AZUL_BOLA, self.bolinha_pos, 10)
 
         # Desenha plataformas
         if self.clicou == True:
@@ -206,11 +206,14 @@ class Plataformas:
 class TelaInicio:
     def __init__(self):
         pygame.init()
+        
         self.tamanho_tela = [500, 700]
         self.window = pygame.display.set_mode(self.tamanho_tela)
         self.imagem_inicio = pygame.image.load('assets/minerando.jpeg')
         self.imagem_inicio = pygame.transform.scale(self.imagem_inicio, (700, 700))
+        
         self.fonte_inicio = pygame.font.Font('assets/Emulogic-zrEw.ttf', 20)
+        self.fonte_titulo = pygame.font.Font('assets/PlaymegamesReguler-2OOee.ttf', 45)
         self.jogo = Jogo()
     
     def colisao_ponto_retangulo(self, pontox, pontoy, rectx, recty, rectw, recth):
@@ -241,7 +244,10 @@ class TelaInicio:
         
         inicio = self.fonte_inicio.render('Inicio', self.fonte_inicio, ROXO_ESCURO)
         self.window.blit(inicio, (190, 540))
-        
+
+        titulo = self.fonte_titulo.render('Platforms of Salvation', self.fonte_titulo, ROXO_ESCURO)
+        self.window.blit(titulo, (46, 50))
+
         pygame.display.update()
 
     def inicio_loop(self):
@@ -251,7 +257,7 @@ class TelaInicio:
             if inicio:
                 self.desenha_tela_inicio()
 
-
+'''
 class Coins(pygame.sprite.Sprite):
 	def __init__(self):
 		self.animation = [pygame.image.load('assets/coin1.png') , pygame.image.load('assets/coin2.png'), 
@@ -265,17 +271,11 @@ class Coins(pygame.sprite.Sprite):
         self.rect.y = y
         self.posicoes = []
 
-
-
 	def atualiza_coin(self):
         self.frame += 1
         if self.frame >= len(self.animation):
             self.frame_index = 0
         self.coin_atual = self.animation[self.frame]
-
-
-
-
 
 	def desenha_coin(self, window):
 		for i in range(10):
@@ -291,3 +291,4 @@ class Coins(pygame.sprite.Sprite):
 		for moeda in self.posicoes:
 			window.blit(self.coin_atual, moeda)
     pygame.display.flip()
+    '''
