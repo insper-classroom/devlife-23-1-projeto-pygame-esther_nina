@@ -12,6 +12,8 @@ class Jogo:
         self.cor_bolinha = (120, 148, 204)
         self.cor_plat = (7, 15, 33)
         self.clicou =  False
+        self.pos_inicial_linha = (0, 0)
+        self.pos_final_linha = (0, 0)
         # Calcular a posição do jogador após pingar
         self.bolinha_pos = [240, 50]
         self.bolinha_vel = [100, 150]
@@ -72,7 +74,6 @@ class Jogo:
                     elif self.pos_inicial_linha[1] > 650:
                         self.pos_inicial_linha[1] =  650
         
-
             if evento.type == pygame.MOUSEBUTTONUP:
                 if evento.button == 1:
                     # Apenas após o mouse é solto que a linha pode ser desenhada
@@ -133,8 +134,7 @@ class Plataformas:
         self.coordenadas_final = coordenada_final
         Plataformas.plataformas_anteriores.append(self)
 
-    def desenha_plataforma( window):
-        
+    def desenha_plataforma(window):
         for plataforma in Plataformas.plataformas_anteriores:
                 pygame.draw.polygon(window, plataforma.cor, (plataforma.coordenadas_comeco, plataforma.coordenadas_final, (plataforma.coordenadas_final[0], plataforma.coordenadas_final[1] - 3), (plataforma.coordenadas_comeco[0], plataforma.coordenadas_comeco[1] -3)))
 
@@ -177,7 +177,7 @@ class Plataformas:
                 else:
                     return 'flip'
             else:
-                if vel_bola>0:
+                if vel_bola > 0:
                     return 'continua'
                 else:
                     return 'flip'
@@ -186,5 +186,36 @@ class Plataformas:
         
 class TelaInicio:
     def __init__(self):
-        self.imagem_fundo = pygame.image.load('minerando 2.jpeg')
+        self.tamanho_tela = [500, 700]
+        self.window = pygame.display.set_mode(self.tamanho_tela)
+        self.imagem_inicio = pygame.image.load('minerando 2.jpeg')
+        pygame.transform.scale(self.imagem_inicio, (700, 700))
+        self.jogo = Jogo()
+    
+    def colisao_ponto_retangulo(self, pontox, pontoy, rectx, recty, rectw, recth):
+        if rectx <= pontox <= (rectx + rectw) and recty <= pontoy <= (recty + recth):
+            return True
+        else:
+            return False
 
+    def atualiza_tela(self):
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                return False
+            elif evento.type == pygame.MOUSEBUTTONDOWN:
+                self.coordenadas_clique = pygame.mouse.get_pos()
+                if self.colisao_ponto_retangulo(self.coordenadas_clique[0], self.coordenadas_clique[1], 150, 500, 200, 100):
+                    self.jogo.game_loop()
+        return True
+
+    def desenha_tela_inicio(self):
+        self.window.blit(self.imagem_inicio, (100, 0))
+        pygame.draw.rect(self.window, (200, 245, 247), (150, 500, 200, 100))
+
+    def inicio_loop(self):
+        inicio = True
+        while inicio:
+            inicio = self.atualiza_tela()
+            if inicio:
+                self.desenha_tela_inicio()
+            
