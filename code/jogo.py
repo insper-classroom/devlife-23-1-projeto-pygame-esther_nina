@@ -1,4 +1,4 @@
-from funcoes import Jogo
+from funcoes import *
 
-game = Jogo()
-game.game_loop()
+game = TelaInicio()
+game.inicio_loop()
