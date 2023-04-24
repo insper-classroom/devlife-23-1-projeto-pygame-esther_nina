@@ -55,8 +55,7 @@ class Jogo:
             game = self.atualiza_estado()
             if game:
                 self.desenha()
-            
 
-        return
+
     
         
