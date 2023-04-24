@@ -6,7 +6,7 @@ ROXO_ESCURO = (29, 0, 33)
 AZUL_CLARINHO = (200, 245, 247)
 AZUL_BOLA = (115, 209, 208)
 ROSA = (228, 97, 128)
-AZUL_FUNDO = (22, 47, 109)
+AZUL_FUNDO = (23, 28, 48)
 
 class Jogo:
     def __init__(self):
@@ -21,8 +21,9 @@ class Jogo:
         self.bolinha_vel = [75, 0]
         self.bolinha_tempo = 0
         # Loading de imagens e sons
-        self.bloco_img =  pygame.transform.scale(pygame.image.load('assets/bloquinho.png'), (50,50))
-        self.pedrinha_img = pygame.transform.scale(pygame.image.load('assets/pedrinha.png'),(40,40))    
+        self.bloco_img =  pygame.transform.scale(pygame.image.load('assets/PEDRA.png'), (50, 50))
+        self.pedrinha_img = pygame.transform.scale(pygame.image.load('assets/pedrinha.png'),(40, 40))    
+        self.caverna = pygame.transform.scale(pygame.image.load('assets/caverna.jpeg'),(700 , 700))    
         self.window = pygame.display.set_mode(self.tamanho_tela)
         self.comecou = False
         self.qntd_linhas = 0
@@ -106,12 +107,13 @@ class Jogo:
 
     def desenha(self):
         self.window.fill(AZUL_FUNDO)
+        self.window.blit(self.caverna, (- 200, 0))
         # Desenha pedras paredes
         x = 0
         y = 0
         while x <= self.tamanho_tela[0]:
             # BOTTOM
-            self.window.blit(self.bloco_img, (x, 660)) 
+            self.window.blit(self.bloco_img, (x, 650)) 
             x += 50
         while y <= self.tamanho_tela[1] - 50:
             # WALLS
@@ -123,8 +125,8 @@ class Jogo:
         if self.comecou:
             self.bola_quica()
         else:
-            inicio = self.fonte.render('Aperte espaco para comecar', self.fonte, (5, 14, 34))
-            self.window.blit(inicio, (78, 200))
+            inicio = self.fonte.render('Aperte espaco para comecar', self.fonte, AZUL_CLARINHO)
+            self.window.blit(inicio, (78, 30))
         pygame.draw.circle(self.window, AZUL_BOLA, self.bolinha_pos, 10)
 
         # Desenha plataformas
@@ -156,9 +158,9 @@ class Plataformas:
 
     def desenha_plataforma(window):
         for plataforma in Plataformas.plataformas_anteriores:
-                pygame.draw.polygon(window, plataforma.cor, (plataforma.coordenadas_comeco, plataforma.coordenadas_final, (plataforma.coordenadas_final[0], plataforma.coordenadas_final[1] - 3), (plataforma.coordenadas_comeco[0], plataforma.coordenadas_comeco[1] -3)))
+                pygame.draw.polygon(window, plataforma.cor, (plataforma.coordenadas_comeco, plataforma.coordenadas_final, (plataforma.coordenadas_final[0], plataforma.coordenadas_final[1] - 5), (plataforma.coordenadas_comeco[0], plataforma.coordenadas_comeco[1] - 5)))
 
-    def colidiu(bola_pos):
+    def colidiu(bola_pos): # Cálculo de interssecção ponto e reta, porém limitada, para as colisões com plataformas
         for p in Plataformas.plataformas_anteriores:
             raio = 10
             a = - ((p.coordenadas_comeco[1] - p.coordenadas_final[1])/(p.coordenadas_comeco[0] - p.coordenadas_final[0]))
@@ -189,7 +191,6 @@ class Plataformas:
                     return 'flip'
                 else:
                     return 'continua'
-
             elif angulo_linha < 45 and angulo_linha > 20:
                 if vel_bola > 0:
                     return 'continua'
