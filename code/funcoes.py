@@ -19,8 +19,8 @@ class Jogo:
         self.bolinha_vel = [100, 150]
         self.bolinha_tempo = 0
         # Loading de imagens e sons
-        self.bloco_img =  pygame.transform.scale(pygame.image.load('bloquinho.png'), (50,50))
-        self.pedrinha_img = pygame.transform.scale(pygame.image.load('pedrinha.png'),(40,40))    
+        self.bloco_img =  pygame.transform.scale(pygame.image.load('assets/bloquinho.png'), (50,50))
+        self.pedrinha_img = pygame.transform.scale(pygame.image.load('assets/pedrinha.png'),(40,40))    
         self.window = pygame.display.set_mode(self.tamanho_tela)
         self.plataformas_anteriores = []
 
@@ -188,7 +188,7 @@ class TelaInicio:
     def __init__(self):
         self.tamanho_tela = [500, 700]
         self.window = pygame.display.set_mode(self.tamanho_tela)
-        self.imagem_inicio = pygame.image.load('minerando 2.jpeg')
+        self.imagem_inicio = pygame.image.load('assets/minerando.jpeg')
         pygame.transform.scale(self.imagem_inicio, (700, 700))
         self.jogo = Jogo()
     
