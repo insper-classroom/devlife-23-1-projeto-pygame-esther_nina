@@ -16,12 +16,13 @@ class Jogo:
         self.pos_final_linha = (0, 0)
         # Calcular a posição do jogador após pingar
         self.bolinha_pos = [240, 50]
-        self.bolinha_vel = [100, 150]
+        self.bolinha_vel = [75, 0]
         self.bolinha_tempo = 0
         # Loading de imagens e sons
         self.bloco_img =  pygame.transform.scale(pygame.image.load('assets/bloquinho.png'), (50,50))
         self.pedrinha_img = pygame.transform.scale(pygame.image.load('assets/pedrinha.png'),(40,40))    
         self.window = pygame.display.set_mode(self.tamanho_tela)
+        self.comecou = False
         self.plataformas_anteriores = []
 
     def cria_pedras(self):
@@ -29,7 +30,7 @@ class Jogo:
         self.pedras = pygame.sprite.Group()
         x = random.choice(pos_pedras)
         self.pedras.add((x,1))
-        print(self.pedras())
+
         
     def bola_quica(self):
         # Intervalo de tempo
@@ -38,12 +39,12 @@ class Jogo:
         self.bolinha_tempo = hm
 
         # Calcula a velocidade alterada pela aceleração (gravidade) e o tempo
-        self.bolinha_vel[1] += 350 * delta
+        self.bolinha_vel[1] += 175 * delta
 
         if Plataformas.colidiu(self.bolinha_pos):
-            if Plataformas.verifica_angulo =='flip':
+            if Plataformas.verifica_angulo == 'flip':
                 self.bolinha_vel[1] *= - 1
-                self.bolinha_vel[0] *= -1
+                self.bolinha_vel[0] *= - 1
             else:
                 self.bolinha_vel[1] *= - 1
         # Com isso, calcula as novas posições
@@ -74,7 +75,7 @@ class Jogo:
                         self.pos_inicial_linha[0] = 450
                     elif self.pos_inicial_linha[1] > 650:
                         self.pos_inicial_linha[1] =  650
-        
+
             if evento.type == pygame.MOUSEBUTTONUP:
                 if evento.button == 1:
                     # Apenas após o mouse é solto que a linha pode ser desenhada
@@ -88,6 +89,10 @@ class Jogo:
                         self.pos_final_linha[0] = 450
                     elif self.pos_final_linha[1] > 650:
                         self.pos_final_linha[1] =  650
+            '''
+            elif evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_SPACE:
+                    self.comecou = True '''
                         
         return True
 
@@ -106,11 +111,15 @@ class Jogo:
             self.window.blit(self.bloco_img, (0, y))
             self.window.blit(self.bloco_img, (450, y))
             y += 50
+        
+        #if self.comecou:
         self.bola_quica()
+        #else:
+            
         pygame.draw.circle(self.window, (115, 209, 208), self.bolinha_pos, 10)
 
     #    Desenha plataformas
-        if self.clicou == True:
+        if self.comecou == True:
             Plataformas(self.pos_inicial_linha, self.pos_final_linha)
         Plataformas.verifica_linhas()
         Plataformas.desenha_plataforma(self.window)
@@ -210,8 +219,9 @@ class TelaInicio:
         return True
 
     def desenha_tela_inicio(self):
-        self.window.blit(self.imagem_inicio, (100, 0))
+        self.window.blit(self.imagem_inicio, (-100, 0))
         pygame.draw.rect(self.window, (200, 245, 247), (150, 500, 200, 100))
+        pygame.display.update()
 
     def inicio_loop(self):
         inicio = True
