@@ -42,7 +42,8 @@ class Jogo:
             if Plataformas.verifica_angulo =='flip':
                 self.bolinha_vel[1] *= - 1
                 self.bolinha_vel[0] *= -1
-
+            else:
+                self.bolinha_vel[1] *= - 1
         # Com isso, calcula as novas posições
         self.bolinha_pos[0] += self.bolinha_vel[0] * delta
         self.bolinha_pos[1] += self.bolinha_vel[1] * delta
@@ -163,15 +164,15 @@ class Plataformas:
             angulo_rad = math.atan(tangente)
             angulo_grau = math.degrees(angulo_rad)
             angulo_linha = 180 - (angulo_grau + 90)
-            if angulo_linha > 135:
+            if angulo_linha > 70:
                 return 'continua'
-            elif angulo_linha > 90 and angulo_linha< 135:
+            elif angulo_linha > 45 and angulo_linha< 70:
                 if vel_bola > 0:
                     return 'flip'
                 else:
                     return 'continua'
 
-            elif angulo_linha < 90 and angulo_linha > 45:
+            elif angulo_linha < 45 and angulo_linha > 20:
                 if vel_bola > 0:
                     return 'continua'
                 else:
@@ -181,7 +182,7 @@ class Plataformas:
                     return 'continua'
                 else:
                     return 'flip'
-                # Arrumar pq o angulo nunca vai ser maior que 90 verificar sempre menos
+               
              
         
 class TelaInicio:
