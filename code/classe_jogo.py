@@ -1,7 +1,6 @@
 import pygame
 import random
 from classe_plataforma import *
-from classe_tela_fim import *
 from classe_coins import *
 
 ROXO_ESCURO = (29, 0, 33)
@@ -41,10 +40,6 @@ class Jogo:
         self.bloco_horizontal_y = 650
         self.bloco_vertical_y = 0
         self.plataformas_anteriores = []
-
-        # Define score
-        self.score = 0
-        self.maior_score = 0
 
         # Criação das moedas
         self.all_coins = pygame.sprite.Group()
@@ -110,42 +105,44 @@ class Jogo:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 return False
-            if evento.type == pygame.MOUSEBUTTONDOWN:
-                if evento.button == 1:
-                    self.coordenadas_comeco = pygame.mouse.get_pos()
-                    self.pos_inicial_linha = [self.coordenadas_comeco[0], self.coordenadas_comeco[1]]
-                    # Recomeça o "clicou" para que as linhas sejam criadas separadamente
-                    self.clicou = False
-                    # Impedir que a bolinha entre dentro da parede 
-                    if self.pos_inicial_linha[0] < 50:
-                        self.pos_inicial_linha[0] = 50
-                    elif self.pos_inicial_linha[0] > 450:
-                        self.pos_inicial_linha[0] = 450
-                    elif self.pos_inicial_linha[1] > 650:
-                        self.pos_inicial_linha[1] =  650
-
-            if evento.type == pygame.MOUSEBUTTONUP:
-                if evento.button == 1:
-                    # Apenas após o mouse é solto que a linha pode ser desenhada
-                    self.clicou =  True
-                    # Não permitir que ele desenhe a primeira linha após clicar no 'Inicio'
-                    self.qntd_linhas += 1
-
-                    self.coordenadas_final = pygame.mouse.get_pos()
-                    self.pos_final_linha = [self.coordenadas_final[0], self.coordenadas_final[1]]
-                    # Impedir (novamente) que a bolinha entre dentro da parede 
-                    if self.pos_final_linha[0] < 50:
-
-                        self.pos_final_linha[0] = 50
-                    elif self.pos_final_linha[0] > 450:
-                        self.pos_final_linha[0] = 450
-                    elif self.pos_final_linha[1] > 650:
-                        self.pos_final_linha[1] =  650
-            
-            elif evento.type == pygame.KEYUP:
+            if evento.type == pygame.KEYUP:
                 if evento.key == pygame.K_SPACE:
                     self.comecou = True 
                     self.bolinha_tempo = pygame.time.get_ticks()     
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                if evento.button == 1:
+                    if self.comecou == True:
+                        self.coordenadas_comeco = pygame.mouse.get_pos()
+                        self.pos_inicial_linha = [self.coordenadas_comeco[0], self.coordenadas_comeco[1]]
+                        # Recomeça o "clicou" para que as linhas sejam criadas separadamente
+                        self.clicou = False
+                        # Impedir que a bolinha entre dentro da parede 
+                        if self.pos_inicial_linha[0] < 50:
+                            self.pos_inicial_linha[0] = 50
+                        elif self.pos_inicial_linha[0] > 450:
+                            self.pos_inicial_linha[0] = 450
+                        elif self.pos_inicial_linha[1] > 650:
+                            self.pos_inicial_linha[1] =  650
+
+            if evento.type == pygame.MOUSEBUTTONUP:
+                if evento.button == 1:
+                    if self.comecou == True:
+                        # Apenas após o mouse é solto que a linha pode ser desenhada
+                        self.clicou =  True
+                        # Não permitir que ele desenhe a primeira linha após clicar no 'Inicio'
+                        self.qntd_linhas += 1
+
+                        self.coordenadas_final = pygame.mouse.get_pos()
+                        self.pos_final_linha = [self.coordenadas_final[0], self.coordenadas_final[1]]
+                        # Impedir (novamente) que a bolinha entre dentro da parede 
+                        if self.pos_final_linha[0] < 50:
+
+                            self.pos_final_linha[0] = 50
+                        elif self.pos_final_linha[0] > 450:
+                            self.pos_final_linha[0] = 450
+                        elif self.pos_final_linha[1] > 650:
+                            self.pos_final_linha[1] =  650
+                
         return True
 
     def desenha(self):
@@ -205,4 +202,127 @@ class Jogo:
             game = self.atualiza_estado()
             if game:
                 self.desenha()
+
+
+class TelaFim:
+    def __init__(self):
+        pygame.init()
+        pygame.mixer.init()
+        self.tamanho_tela = [500, 700]
+        self.window = pygame.display.set_mode(self.tamanho_tela)
+        self.imagem_inicio = pygame.image.load('assets/casa_caiu.jpeg')
+        self.imagem_inicio = pygame.transform.scale(self.imagem_inicio, (700, 700))
+        
+        self.fonte = pygame.font.Font('assets/Emulogic-zrEw.ttf', 20)
+        self.inicio = TelaInicio()
+        self.fim =  True
+
+        self.score = 0
+        self.maior_score = 0
+
+        
+
+    def atualiza_tela(self):
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                return False
+            elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_r :
+                    self.inicio.inicio_loop()
+                    return False
+        return True
+
+    def desenha_tela_fim(self):
+        self.window.blit(self.imagem_inicio, (- 87, 0))
+        pygame.draw.rect(self.window, AZUL_CLARINHO, (150, 500, 200, 100))
+        
+        game_over = self.fonte.render('A alma se perdeu...', self.fonte, ROXO_ESCURO)
+        self.window.blit(game_over, (46, 300))
+
+        restart = self.fonte.render('Pressione R para recomeçar', self.fonte, ROXO_ESCURO)
+        self.window.blit(restart, (100, 650))
+
+        score =  self.fonte.render(f'Score: {self.score}', self.fonte, ROXO_ESCURO)
+        self.window.blit(score, (100, 540))
+
+        maior_score = self.fonte.render(f'Highest Score:: {self.maior_score}', self.fonte, ROXO_ESCURO)
+        self.window.blit(maior_score, (100, 600))
+        pygame.display.update()
+
+    def fim_loop(self): # O loop para a tela de fim
+       while self.fim == True:
+            self.fim = self.atualiza_tela()
+            if self.fim:
+                self.desenha_tela_fim()
+
+
+
+
+
+
+class TelaInicio:
+    def __init__(self):
+        pygame.init()
+        
+        self.tamanho_tela = [500, 700]
+        self.window = pygame.display.set_mode(self.tamanho_tela)
+        self.imagem_inicio = pygame.image.load('assets/minerando.jpeg')
+        self.imagem_inicio = pygame.transform.scale(self.imagem_inicio, (700, 700))
+        
+        self.fonte_inicio = pygame.font.Font('assets/Emulogic-zrEw.ttf', 20)
+        self.fonte_titulo = pygame.font.Font('assets/PlaymegamesReguler-2OOee.ttf', 45)
+        self.fonte_footer = pygame.font.Font('assets/PlaymegamesReguler-2OOee.ttf', 20)
+        self.jogo = Jogo()
+
+        self.musica = pygame.mixer.music.load('assets/cave music.mp3')
+        pygame.mixer.music.play()
+
+    
+    def colisao_ponto_retangulo(self, pontox, pontoy, rectx, recty, rectw, recth):
+        if rectx <= pontox <= (rectx + rectw) and recty <= pontoy <= (recty + recth):
+            return True
+        else:
+            return False
+
+    def atualiza_tela(self):
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                return False
+            elif evento.type == pygame.MOUSEBUTTONDOWN:
+                self.coordenadas_clique = pygame.mouse.get_pos() 
+                # Se o jogador clicou no retângulo 'inicio', o jogo se inicia
+                if self.colisao_ponto_retangulo(self.coordenadas_clique[0], self.coordenadas_clique[1], 150, 500, 200, 100): 
+                    self.jogo.game_loop()
+                    return False
+        return True
+
+    def desenha_tela_inicio(self):
+        self.window.blit(self.imagem_inicio, (- 87, 0))
+        pygame.draw.rect(self.window, AZUL_CLARINHO, (150, 500, 200, 100))
+        # Desenhando o botão e as suas limitações
+        pygame.draw.rect(self.window, ROSA, (150, 500, 200, 10))
+        pygame.draw.rect(self.window, ROSA, (150, 500, 10, 100))
+        pygame.draw.rect(self.window, ROSA, (150, 600, 200, 10))
+        pygame.draw.rect(self.window, ROSA, (350, 500, 10, 110))
+        
+        inicio = self.fonte_inicio.render('Inicio', self.fonte_inicio, ROXO_ESCURO)
+        self.window.blit(inicio, (190, 540))
+
+        titulo = self.fonte_titulo.render('Platforms of Salvation', self.fonte_titulo, ROXO_ESCURO)
+        self.window.blit(titulo, (46, 50))
+
+        footer = self.fonte_footer.render('Desenvolvido por Esther Caroline e Nina Savoy', self.fonte_footer, AZUL_CLARINHO)
+        self.window.blit(footer, (63, 670)) 
+
+        pygame.display.update()
+
+    def inicio_loop(self): # O loop para a tela início
+        inicio = True
+        while inicio:
+            inicio = self.atualiza_tela()
+            if inicio:
+                self.desenha_tela_inicio()
+
+
+
+
             
