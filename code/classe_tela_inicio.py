@@ -66,6 +66,3 @@ class TelaInicio:
             inicio = self.atualiza_tela()
             if inicio:
                 self.desenha_tela_inicio()
-
-
-

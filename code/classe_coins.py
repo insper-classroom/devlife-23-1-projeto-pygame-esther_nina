@@ -27,8 +27,3 @@ class Coins(pygame.sprite.Sprite):
         self.image = self.animation[self.frame]
     def draw(self, window):
         window.blit(self.image, self.rect)
-
-       
-    
-
-    # pygame.display.flip()
