@@ -31,7 +31,9 @@ class Jogo:
         self.qntd_linhas = 0
         self.primeiro = 0
         self.caverna_y = - 250
-        self.bloco_y = 650
+        
+        self.bloco_horizontal_y = 650
+        self.bloco_vertical_y = 0
         
         self.plataformas_anteriores = []
 
@@ -133,12 +135,12 @@ class Jogo:
         self.window.blit(self.caverna, (- 500, self.caverna_y))
         # Desenha pedras paredes
         x = 0
-        y = 0
+        y = self.bloco_vertical_y
         while x <= self.tamanho_tela[0]:
             # BOTTOM
-            self.window.blit(self.bloco_img, (x, self.bloco_y)) 
+            self.window.blit(self.bloco_img, (x, self.bloco_horizontal_y)) 
             x += 50
-        while y <= self.tamanho_tela[1] - 50:
+        while y <= self.tamanho_tela[1]:
             # WALLS
             self.window.blit(self.bloco_img, (0, y))
             self.window.blit(self.bloco_img, (450, y))
@@ -149,7 +151,8 @@ class Jogo:
             self.bola_quica()
             if self.alpha_fab():
                 self.caverna_y += 1
-                self.bloco_y += 1
+                self.bloco_horizontal_y += 1
+                self.bloco_vertical_y += 1
         else:
             inicio = self.fonte.render('Aperte espaco para comecar', self.fonte, AZUL_CLARINHO)
             self.window.blit(inicio, (78, 30))
@@ -177,7 +180,6 @@ class Jogo:
             
 class Plataformas:
     plataformas_anteriores = []
-    rect_plataformas = []
 
     def __init__(self, coordenada_inicio, coordenada_final):
         self.cor = (255, 255, 255)
@@ -284,7 +286,7 @@ class TelaInicio:
         self.window.blit(titulo, (46, 50))
 
         footer = self.fonte_footer.render('Desenvolvido por Esther Caroline e Nina Savoy', self.fonte_footer, AZUL_CLARINHO)
-        self.window.blit(footer, (44, 670)) 
+        self.window.blit(footer, (63, 670)) 
 
 
         pygame.display.update()
