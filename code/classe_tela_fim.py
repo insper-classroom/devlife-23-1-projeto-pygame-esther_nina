@@ -1,5 +1,11 @@
 import pygame
-from funcoes import *
+from classe_jogo import *
+
+ROXO_ESCURO = (29, 0, 33)
+AZUL_CLARINHO = (200, 245, 247)
+AZUL_BOLA = (115, 209, 208)
+ROSA = (228, 97, 128)
+AZUL_FUNDO = (23, 28, 48)
 
 class TelaFim:
     def __init__(self):
@@ -40,9 +46,9 @@ class TelaFim:
         self.window.blit(maior_score, (100, 600))
         pygame.display.update()
 
-    def inicio_loop(self): # O loop para a tela de fim
-        inicio = True
-        while inicio:
-            inicio = self.atualiza_tela()
-            if inicio:
+    def fim_loop(self): # O loop para a tela de fim
+        fim = True
+        while fim:
+            fim = self.atualiza_tela()
+            if fim:
                 self.desenha_tela_inicio()
