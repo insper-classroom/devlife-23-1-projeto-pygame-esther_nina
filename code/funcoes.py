@@ -30,11 +30,13 @@ class Jogo:
         self.comecou = False
         self.qntd_linhas = 0
         self.primeiro = 0
-        self.caverna_y = - 250
         
+        self.caverna1_y = - 300
+        self.caverna2_y = - 1300
+        self.caverna3_y = - 2300
+
         self.bloco_horizontal_y = 650
         self.bloco_vertical_y = 0
-        
         self.plataformas_anteriores = []
 
         # Criação das moedas
@@ -42,7 +44,6 @@ class Jogo:
         for i in range(10):
             moeda =  Coins()
             self.all_coins.add(moeda)
-
 
     def cria_pedras(self):
         pos_pedras = [1, 51, 101, 151, 201, 251, 301, 351, 401, 451, 500]
@@ -72,7 +73,7 @@ class Jogo:
        # Coloca limites nas paredes
         if self.bolinha_pos[0] - 10 < 50 or self.bolinha_pos[0] + 10 >= 450:
             self.bolinha_vel[0] *= - 1
-        if self.bolinha_pos[1] - 10 > 650:
+        if self.bolinha_pos[1] - 10 > self.bloco_horizontal_y:
             self.bolinha_vel[1] *= - 1 
 
     def alpha_fab(self):
@@ -118,6 +119,7 @@ class Jogo:
                     self.pos_final_linha = [self.coordenadas_final[0], self.coordenadas_final[1]]
                     # Impedir (novamente) que a bolinha entre dentro da parede 
                     if self.pos_final_linha[0] < 50:
+
                         self.pos_final_linha[0] = 50
                     elif self.pos_final_linha[0] > 450:
                         self.pos_final_linha[0] = 450
@@ -127,12 +129,22 @@ class Jogo:
             elif evento.type == pygame.KEYUP:
                 if evento.key == pygame.K_SPACE:
                     self.comecou = True 
-                    
+                    self.bolinha_tempo = pygame.time.get_ticks()     
         return True
 
     def desenha(self):
         self.window.fill(AZUL_FUNDO)
-        self.window.blit(self.caverna, (- 500, self.caverna_y))
+        if self.caverna1_y >= - 300:
+            self.window.blit(self.caverna, (- 500, self.caverna1_y))
+            self.window.blit(self.caverna, (0, self.caverna2_y))
+            self.window.blit(self.caverna, (- 500, self.caverna3_y))
+        elif self.caverna2_y >= - 300:
+           self.window.blit(self.caverna, (0, self.caverna2_y))
+           self.window.blit(self.caverna, (- 500, self.caverna1_y))
+           self.window.blit(self.caverna, (0, self.caverna3_y))
+        else:
+            self.window.blit(self.caverna, (- 500, self.caverna1_y))
+            self.window.blit(self.caverna, (0, self.caverna2_y))
         # Desenha pedras paredes
         x = 0
         y = self.bloco_vertical_y
@@ -145,17 +157,19 @@ class Jogo:
             self.window.blit(self.bloco_img, (0, y))
             self.window.blit(self.bloco_img, (450, y))
             y += 50
-        
         # A bola permanece parada até o jogador dar início
         if self.comecou:
             self.bola_quica()
             if self.alpha_fab():
-                self.caverna_y += 1
-                self.bloco_horizontal_y += 1
-                self.bloco_vertical_y += 1
+                self.caverna1_y += 10
+                self.caverna2_y += 10
+                self.caverna3_y += 10
+                self.bloco_horizontal_y += 10
+                self.bloco_vertical_y += 10
         else:
             inicio = self.fonte.render('Aperte espaco para comecar', self.fonte, AZUL_CLARINHO)
             self.window.blit(inicio, (78, 30))
+
         pygame.draw.circle(self.window, AZUL_BOLA, self.bolinha_pos, 10)
 
         # Desenha plataformas
@@ -216,8 +230,8 @@ class Plataformas:
             tangente = cateto_oposto / cateto_adjacente
             angulo_rad = math.atan(tangente)
             angulo_grau = math.degrees(angulo_rad)
-            
             angulo_linha = 180 - (angulo_grau + 90)
+
             if angulo_linha > 70:
                 return 'continua'
             elif angulo_linha > 45 and angulo_linha < 70:
@@ -235,9 +249,9 @@ class Plataformas:
                     return 'continua'
                 else:
                     return 'flip'
-               
-             
-        
+
+
+
 class TelaInicio:
     def __init__(self):
         pygame.init()
@@ -288,7 +302,6 @@ class TelaInicio:
         footer = self.fonte_footer.render('Desenvolvido por Esther Caroline e Nina Savoy', self.fonte_footer, AZUL_CLARINHO)
         self.window.blit(footer, (63, 670)) 
 
-
         pygame.display.update()
 
     def inicio_loop(self): # O loop para a tela início
@@ -312,14 +325,12 @@ class Coins(pygame.sprite.Sprite):
         coin7 =  pygame.transform.scale(pygame.image.load('assets/coin7.png'), (150,60))
         coin8 =  pygame.transform.scale(pygame.image.load('assets/coin8.png'), (150,60))
         self.animation = [coin1 , coin2, coin3, coin4, coin5, 	coin6, coin7, coin8]
-        
 
         self.frame = 0
         self.image = self.animation[self.frame]
         self.rect = self.image.get_rect()
-        self.rect.x = random.randint(50,350)
-        self.rect.y = random.randint(0,650)
-        
+        self.rect.x = random.randint(50, 350)
+        self.rect.y = random.randint(0, 650)
 
     def update(self):
         self.frame += 1
