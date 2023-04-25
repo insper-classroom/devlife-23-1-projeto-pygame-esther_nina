@@ -23,12 +23,17 @@ class Jogo:
         # Loading de imagens e sons
         self.bloco_img =  pygame.transform.scale(pygame.image.load('assets/PEDRA.png'), (50, 50))
         self.pedrinha_img = pygame.transform.scale(pygame.image.load('assets/pedrinha.png'),(40, 40))    
-        self.caverna = pygame.transform.scale(pygame.image.load('assets/caverna.jpeg'),(700 , 700))    
+        self.caverna = pygame.transform.scale(pygame.image.load('assets/caverna.jpeg'),(1000 , 1000))    
+        self.fonte = pygame.font.Font('assets/Emulogic-zrEw.ttf', 13)
         self.window = pygame.display.set_mode(self.tamanho_tela)
+        
         self.comecou = False
         self.qntd_linhas = 0
+        self.primeiro = 0
+        self.caverna_y = - 250
+        self.bloco_y = 650
+        
         self.plataformas_anteriores = []
-        self.fonte = pygame.font.Font('assets/Emulogic-zrEw.ttf', 13)
 
     def cria_pedras(self):
         pos_pedras = [1, 51, 101, 151, 201, 251, 301, 351, 401, 451, 500]
@@ -61,10 +66,15 @@ class Jogo:
         if self.bolinha_pos[1] - 10 > 650:
             self.bolinha_vel[1] *= - 1 
 
+    def alpha_fab(self):
+        self.relogio = pygame.time.get_ticks() #em milissegundos
+        subtracao = self.relogio - self.primeiro
+        if subtracao >= 100:
+            self.primeiro = self.relogio
+            return True
+        return False
+
     def atualiza_estado(self):
-        relogio = pygame.time.get_ticks()
-        self.tempo = relogio / 1000
-        
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 return False
@@ -102,18 +112,18 @@ class Jogo:
             elif evento.type == pygame.KEYUP:
                 if evento.key == pygame.K_SPACE:
                     self.comecou = True 
-                    self.bolinha_tempo = pygame.time.get_ticks()
+                    
         return True
 
     def desenha(self):
         self.window.fill(AZUL_FUNDO)
-        self.window.blit(self.caverna, (- 200, 0))
+        self.window.blit(self.caverna, (- 500, self.caverna_y))
         # Desenha pedras paredes
         x = 0
         y = 0
         while x <= self.tamanho_tela[0]:
             # BOTTOM
-            self.window.blit(self.bloco_img, (x, 650)) 
+            self.window.blit(self.bloco_img, (x, self.bloco_y)) 
             x += 50
         while y <= self.tamanho_tela[1] - 50:
             # WALLS
@@ -124,6 +134,9 @@ class Jogo:
         # A bola permanece parada até o jogador dar início
         if self.comecou:
             self.bola_quica()
+            if self.alpha_fab():
+                self.caverna_y += 1
+                self.bloco_y += 1
         else:
             inicio = self.fonte.render('Aperte espaco para comecar', self.fonte, AZUL_CLARINHO)
             self.window.blit(inicio, (78, 30))
@@ -152,6 +165,7 @@ class Plataformas:
 
     def __init__(self, coordenada_inicio, coordenada_final):
         self.cor = (255, 255, 255)
+        # Criador das nossas linhas, nas quais a bolinha pulará em
         self.coordenadas_comeco = coordenada_inicio
         self.coordenadas_final = coordenada_final
         Plataformas.plataformas_anteriores.append(self)
@@ -171,18 +185,20 @@ class Plataformas:
                 return True
         return False
 
-    def verifica_linhas():
+    def verifica_linhas(): # Deletar plataformas anteriores
         linhas = len(Plataformas.plataformas_anteriores)
         if linhas >= 2:
             del Plataformas.plataformas_anteriores[0]
 
-    def verifica_angulo(vel_bola):
+    def verifica_angulo(vel_bola): # Interlúdio de física e matemática, para que a colisão seja mais realista
         for plataforma in Plataformas.plataformas_anteriores:
             cateto_oposto = abs(plataforma.coordenadas_final[0] - plataforma.coordenadas_comeco[0])
             cateto_adjacente = abs (plataforma.coordenadas_final[1] - plataforma.coordenadas_comeco[1])
+            # Cálculos trigonométricos
             tangente = cateto_oposto / cateto_adjacente
             angulo_rad = math.atan(tangente)
             angulo_grau = math.degrees(angulo_rad)
+            
             angulo_linha = 180 - (angulo_grau + 90)
             if angulo_linha > 70:
                 return 'continua'
@@ -228,8 +244,9 @@ class TelaInicio:
             if evento.type == pygame.QUIT:
                 return False
             elif evento.type == pygame.MOUSEBUTTONDOWN:
-                self.coordenadas_clique = pygame.mouse.get_pos()
-                if self.colisao_ponto_retangulo(self.coordenadas_clique[0], self.coordenadas_clique[1], 150, 500, 200, 100):
+                self.coordenadas_clique = pygame.mouse.get_pos() 
+                # Se o jogador clicou no retângulo 'inicio', o jogo se inicia
+                if self.colisao_ponto_retangulo(self.coordenadas_clique[0], self.coordenadas_clique[1], 150, 500, 200, 100): 
                     self.jogo.game_loop()
                     return False
         return True
@@ -237,7 +254,7 @@ class TelaInicio:
     def desenha_tela_inicio(self):
         self.window.blit(self.imagem_inicio, (- 87, 0))
         pygame.draw.rect(self.window, AZUL_CLARINHO, (150, 500, 200, 100))
-        
+        # Desenhando o botão e as suas limitações
         pygame.draw.rect(self.window, ROSA, (150, 500, 200, 10))
         pygame.draw.rect(self.window, ROSA, (150, 500, 10, 100))
         pygame.draw.rect(self.window, ROSA, (150, 600, 200, 10))
@@ -251,7 +268,7 @@ class TelaInicio:
 
         pygame.display.update()
 
-    def inicio_loop(self):
+    def inicio_loop(self): # O loop para a tela início
         inicio = True
         while inicio:
             inicio = self.atualiza_tela()
