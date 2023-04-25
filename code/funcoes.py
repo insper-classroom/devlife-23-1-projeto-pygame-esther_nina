@@ -35,6 +35,13 @@ class Jogo:
         
         self.plataformas_anteriores = []
 
+        # Criação das moedas
+        self.all_coins = pygame.sprite.Group()
+        for i in range(10):
+            moeda =  Coins()
+            self.all_coins.add(moeda)
+
+
     def cria_pedras(self):
         pos_pedras = [1, 51, 101, 151, 201, 251, 301, 351, 401, 451, 500]
         self.pedras = pygame.sprite.Group()
@@ -75,6 +82,12 @@ class Jogo:
         return False
 
     def atualiza_estado(self):
+        # Muda animação da moeda
+        tempo = Jogo.alpha_fab(self)
+        if tempo:
+            for moeda in self.all_coins:
+                atualiza = moeda.update()
+
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 return False
@@ -148,6 +161,9 @@ class Jogo:
                 Plataformas(self.pos_inicial_linha, self.pos_final_linha)
         Plataformas.verifica_linhas()
         Plataformas.desenha_plataforma(self.window)
+
+        # Desenha coins
+        self.all_coins.draw(self.window)
         pygame.display.update()
 
     def game_loop(self):
@@ -231,6 +247,7 @@ class TelaInicio:
         
         self.fonte_inicio = pygame.font.Font('assets/Emulogic-zrEw.ttf', 20)
         self.fonte_titulo = pygame.font.Font('assets/PlaymegamesReguler-2OOee.ttf', 45)
+        self.fonte_footer = pygame.font.Font('assets/PlaymegamesReguler-2OOee.ttf', 20)
         self.jogo = Jogo()
     
     def colisao_ponto_retangulo(self, pontox, pontoy, rectx, recty, rectw, recth):
@@ -266,6 +283,10 @@ class TelaInicio:
         titulo = self.fonte_titulo.render('Platforms of Salvation', self.fonte_titulo, ROXO_ESCURO)
         self.window.blit(titulo, (46, 50))
 
+        footer = self.fonte_footer.render('Desenvolvido por Esther Caroline e Nina Savoy', self.fonte_footer, AZUL_CLARINHO)
+        self.window.blit(footer, (44, 670)) 
+
+
         pygame.display.update()
 
     def inicio_loop(self): # O loop para a tela início
@@ -276,35 +297,38 @@ class TelaInicio:
                 self.desenha_tela_inicio()
 
 
+
 class Coins(pygame.sprite.Sprite):
     def __init__(self):
-        self.animation = [pygame.image.load('assets/coin1.png') , pygame.image.load('assets/coin2.png'), 
-                    pygame.image.load('assets/coin3.png'), pygame.image.load('assets/coin4.png'), 
-                    pygame.image.load('assets/coin5.png'), 	pygame.image.load('assets/coin6.png'), 
-                    pygame.image.load('assets/coin7.png'), pygame.image.load('assets/coin8.png')]
+        pygame.sprite.Sprite.__init__(self)
+        coin1 =  pygame.transform.scale(pygame.image.load('assets/coin1.png'), (150,60))
+        coin2 =  pygame.transform.scale(pygame.image.load('assets/coin2.png'), (150,60))
+        coin3 =  pygame.transform.scale(pygame.image.load('assets/coin3.png'), (150,60))
+        coin4 =  pygame.transform.scale(pygame.image.load('assets/coin4.png'), (150,60))
+        coin5 =  pygame.transform.scale(pygame.image.load('assets/coin5.png'), (150,60))
+        coin6 =  pygame.transform.scale(pygame.image.load('assets/coin6.png'), (150,60))
+        coin7 =  pygame.transform.scale(pygame.image.load('assets/coin7.png'), (150,60))
+        coin8 =  pygame.transform.scale(pygame.image.load('assets/coin8.png'), (150,60))
+        self.animation = [coin1 , coin2, coin3, coin4, coin5, 	coin6, coin7, coin8]
+        
+
         self.frame = 0
         self.image = self.animation[self.frame]
         self.rect = self.image.get_rect()
-        self.rect.x = random.randint(50,650)
-        self.rect.y = random.randint(0,450)
-        self.posicoes = []
+        self.rect.x = random.randint(50,350)
+        self.rect.y = random.randint(0,650)
+        
 
     def update(self):
         self.frame += 1
         if self.frame >= len(self.animation):
-            self.frame_index = 0
+            self.frame = 0
         self.image = self.animation[self.frame]
+    def draw(self, window):
+        window.blit(self.image, self.rect)
 
-    # def desenha_coin(self, window):
-    #     for i in range(10):
-    #         self.posicoes.append((x,y))
-            
-    #     grupo = pygame.sprite.Group()
-    #     grupo.add(sprite)
+       
+    
 
-    #         # Update sprites
-    #     # grupo.update()
-    #     for moeda in self.posicoes:
-    #         window.blit(self.image, moeda)
     # pygame.display.flip()
     
