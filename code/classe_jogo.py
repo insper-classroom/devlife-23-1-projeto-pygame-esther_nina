@@ -24,7 +24,6 @@ class Jogo:
         self.window = pygame.display.set_mode(self.tamanho_tela)
         
         self.comecou = False
-        self.qntd_linhas = 0
         self.primeiro = 0
         self.primeiro_coins = 0
         
@@ -124,8 +123,6 @@ class Jogo:
                     if self.comecou == True:
                         # Apenas após o mouse é solto que a linha pode ser desenhada
                         self.clicou =  True
-                        # Não permitir que ele desenhe a primeira linha após clicar no 'Inicio'
-                        self.qntd_linhas += 1
 
                         self.coordenadas_final = pygame.mouse.get_pos()
                         self.pos_final_linha = [self.coordenadas_final[0], self.coordenadas_final[1]]
@@ -184,8 +181,7 @@ class Jogo:
 
         # Desenha plataformas
         if self.clicou == True:
-            if self.qntd_linhas > 1:
-                Plataformas(self.pos_inicial_linha, self.pos_final_linha)
+            Plataformas(self.pos_inicial_linha, self.pos_final_linha)
         Plataformas.verifica_linhas()
         Plataformas.desenha_plataforma(self.window)
 
