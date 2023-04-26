@@ -31,7 +31,7 @@ class Jogo:
         self.caverna2_y = - 1300
 
         self.bloco_horizontal_y = 650
-        self.bloco_vertical_y = - 1300
+        self.bloco_vertical_y = - 300
         self.plataformas_anteriores = []
 
         # Criação das moedas
@@ -127,7 +127,12 @@ class Jogo:
                             self.pos_final_linha[0] = 450
                         elif self.pos_final_linha[1] > 650:
                             self.pos_final_linha[1] =  650
-                
+        if self.comecou:
+            self.bola_quica()
+        if self.bolinha_pos[1] - 10 > 700:
+            fim = TelaFim()
+            fim.fim_loop()
+            return False
         return True
 
     def desenha(self):
@@ -145,6 +150,9 @@ class Jogo:
         if self.caverna2_y >= 700:
             self.caverna2_y = - 1300
         
+        if self.bloco_vertical_y == 0:
+            self.bloco_vertical_y = - 300
+        
         # Desenha pedras paredes
         x = 0
         y = self.bloco_vertical_y
@@ -153,14 +161,13 @@ class Jogo:
             # BOTTOM
             self.window.blit(self.bloco_img, (x, self.bloco_horizontal_y)) 
             x += 50
-        while self.bloco_vertical_y <= y <= 700:
+        while y <= 700:
             # WALLS
             self.window.blit(self.bloco_img, (0, y))
             self.window.blit(self.bloco_img, (450, y))
             y += 50
         # A bola permanece parada até o jogador dar início
         if self.comecou:
-            self.bola_quica()
             if self.alpha_fab():
                 self.caverna1_y += 10
                 self.caverna2_y += 10
@@ -213,7 +220,7 @@ class TelaFim:
             if evento.type == pygame.QUIT:
                 return False
             elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_r :
-                    self.inicio.fim_loop()
+                    self.inicio.inicio_loop()
                     return False
         return True
 
@@ -224,7 +231,7 @@ class TelaFim:
         game_over = self.fonte.render('A alma se perdeu...', self.fonte, BEGE)
         self.window.blit(game_over, (50, 500))
 
-        restart = self.fontemedia.render('Pressione R para recomeçar', self.fontemedia, LARANJA)
+        restart = self.fontemedia.render('Pressione R para recomecar', self.fontemedia, LARANJA)
         self.window.blit(restart, (50, 650))
 
         score =  self.fonte.render(f'Score: {self.score}', self.fonte, MARROM_AVERMELHADO)
