@@ -233,7 +233,7 @@ class TelaFim:
 
     def desenha_tela_fim(self):
         self.window.blit(self.imagem_inicio, (- 87, 0))
-        pygame.draw.rect(self.window, BEGE, (150, 100, 200, 100))
+        pygame.draw.rect(self.window, BEGE, (140, 100, 220, 100))
         
         game_over = self.fonte.render('A alma se perdeu...', self.fonte, BEGE)
         self.window.blit(game_over, (50, 500))
@@ -242,7 +242,7 @@ class TelaFim:
         self.window.blit(restart, (50, 660))
 
         score =  self.fonte.render(f'Score: {self.score}', self.fontemedia, MARROM_AVERMELHADO)
-        self.window.blit(score, (160, 120))
+        self.window.blit(score, (150, 120))
 
         maior_score = self.fontemenor.render(f'Highest Score: {self.maior_score}', self.fontemenor, MARROM_AVERMELHADO)
         self.window.blit(maior_score, (155, 170))
