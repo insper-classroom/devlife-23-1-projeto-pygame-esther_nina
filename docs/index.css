@@ -1,3 +1,7 @@
+@font-face {
+  font-family: "Emulogic Font";
+  src: url("Emulogic-zrEw.ttf") format('truetype');
+}
 * {
     margin: 5;
     padding: 30;
@@ -10,7 +14,6 @@
     flex-direction: row ;
     justify-content: space-between;
     align-items: center;
-    background-color: blue;
     padding: 20px 20px;
   }
   nav {
@@ -21,27 +24,24 @@
     color: #0D101F;
     padding: 20px 
   }
+
+
   body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 20px;
     line-height: 1.5;
     color: #fff;
-    background-color: #fff;
+    background-image: url('caverna 1.jpeg');
   }
+
+
 
   h1 {background-color: transparent;
       padding: 5px; 
-      ;}
+      font-family: 'Emulogic Font';
+      font-size: 40px;
+    margin-left: 20%;}
   
-  a {
-    color: #ffffff;
-    padding: 20px;
-    display: flex;
-    text-decoration: none;
-    background-color: #0D101F;
-    justify-content: space-evenly;
-    flex-direction: row;
-  }
 
   footer {
     position: fixed;
@@ -51,14 +51,26 @@
     background-color: #512532;
     color: white;
     text-align: center;
+    margin: 0;
   }
   
-  a:hover {
-    color: white;
-    text-decoration: underline black;
-  }
   .sobre_jogo{
-    margin-left: 1%;
-    padding: 0px 600px 5px 20px
+    margin-left: 8%;
+    margin-right:8% ;
+    padding: 20px 600px 5px 20px;
+    background: rgba(186, 129, 129, 0.7);;
+    border-radius: 20px 20px 20px 20px ;
+    font-size: 20px;
   }
+
+  .gif{ 
+    margin-left: 900px;
+    position: absolute;
+    margin-left: 920px;
+    bottom: 130px;
+    }
+  img {border-radius: 50%;}
+
+  h2 {margin-left: 43%;
+  font-size: 30px;}
  
