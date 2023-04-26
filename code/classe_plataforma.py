@@ -13,7 +13,7 @@ class Plataformas:
 
     def desenha_plataforma(window):
         for plataforma in Plataformas.plataformas_anteriores:
-                pygame.draw.polygon(window, plataforma.cor, (plataforma.coordenadas_comeco, plataforma.coordenadas_final, (plataforma.coordenadas_final[0], plataforma.coordenadas_final[1] - 5), (plataforma.coordenadas_comeco[0], plataforma.coordenadas_comeco[1] - 5)))
+            pygame.draw.polygon(window, plataforma.cor, (plataforma.coordenadas_comeco, plataforma.coordenadas_final, (plataforma.coordenadas_final[0], plataforma.coordenadas_final[1] - 5), (plataforma.coordenadas_comeco[0], plataforma.coordenadas_comeco[1] - 5)))
 
     def colidiu(bola_pos): # Cálculo de interssecção ponto e reta, porém limitada, para as colisões com plataformas
         for p in Plataformas.plataformas_anteriores:

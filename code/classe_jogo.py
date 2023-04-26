@@ -10,8 +10,8 @@ class Jogo:
         # Set tamanhos e cores
         self.tamanho_tela = [500, 700]
         self.clicou =  False
-        self.pos_inicial_linha = (0, 0)
-        self.pos_final_linha = (0, 0)
+        self.pos_inicial_linha = [0, 0]
+        self.pos_final_linha = [0, 0]
         # Calcular a posição do jogador após pingar
         self.bolinha_pos = [240, 150]
         self.bolinha_vel = [75, 0]
@@ -129,6 +129,7 @@ class Jogo:
                             self.pos_final_linha[1] =  650
         if self.comecou:
             self.bola_quica()
+        
         if self.bolinha_pos[1] - 10 > 700:
             fim = TelaFim()
             fim.fim_loop()
@@ -152,7 +153,6 @@ class Jogo:
         
         if self.bloco_vertical_y == 0:
             self.bloco_vertical_y = - 300
-        
         # Desenha pedras paredes
         x = 0
         y = self.bloco_vertical_y
@@ -167,23 +167,26 @@ class Jogo:
             self.window.blit(self.bloco_img, (450, y))
             y += 50
         # A bola permanece parada até o jogador dar início
-        if self.comecou:
-            if self.alpha_fab():
-                self.caverna1_y += 10
-                self.caverna2_y += 10
-                self.bloco_horizontal_y += 10
-                self.bloco_vertical_y += 10
-        else:
-            inicio = self.fonte.render('Aperte espaco para comecar', self.fonte, AZUL_CLARINHO)
-            self.window.blit(inicio, (78, 30))
-
-        pygame.draw.circle(self.window, AZUL_BOLA, self.bolinha_pos, 10)
-
         # Desenha plataformas
         if self.clicou == True:
             Plataformas(self.pos_inicial_linha, self.pos_final_linha)
         Plataformas.verifica_linhas()
         Plataformas.desenha_plataforma(self.window)
+
+        # A bola permanece parada até o jogador dar início
+        if self.comecou:
+            if self.alpha_fab():
+                self.caverna1_y += 5
+                self.caverna2_y += 5
+                self.bloco_horizontal_y += 5
+                self.bloco_vertical_y += 5
+                self.pos_inicial_linha[1] += 5
+                self.pos_final_linha[1] += 5
+        else:
+            inicio = self.fonte.render('Aperte espaco para comecar', self.fonte, AZUL_CLARINHO)
+            self.window.blit(inicio, (78, 30))
+
+        pygame.draw.circle(self.window, AZUL_BOLA, self.bolinha_pos, 10)
 
         # Desenha coins
         self.all_coins.draw(self.window)
