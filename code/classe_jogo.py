@@ -29,23 +29,16 @@ class Jogo:
         
         self.caverna1_y = - 300
         self.caverna2_y = - 1300
-        self.caverna3_y = - 2300
 
         self.bloco_horizontal_y = 650
-        self.bloco_vertical_y = 0
+        self.bloco_vertical_y = - 1300
         self.plataformas_anteriores = []
 
         # Criação das moedas
         self.all_coins = pygame.sprite.Group()
-        for i in range(10):
+        for _ in range(10):
             moeda =  Coins()
             self.all_coins.add(moeda)
-
-    def cria_pedras(self):
-        pos_pedras = [1, 51, 101, 151, 201, 251, 301, 351, 401, 451, 500]
-        self.pedras = pygame.sprite.Group()
-        x = random.choice(pos_pedras)
-        self.pedras.add((x,1))
 
     def bola_quica(self):
         # Intervalo de tempo
@@ -155,11 +148,12 @@ class Jogo:
         # Desenha pedras paredes
         x = 0
         y = self.bloco_vertical_y
+
         while x <= self.tamanho_tela[0]:
             # BOTTOM
             self.window.blit(self.bloco_img, (x, self.bloco_horizontal_y)) 
             x += 50
-        while y <= self.tamanho_tela[1]:
+        while self.bloco_vertical_y <= y <= 700:
             # WALLS
             self.window.blit(self.bloco_img, (0, y))
             self.window.blit(self.bloco_img, (450, y))
@@ -170,7 +164,6 @@ class Jogo:
             if self.alpha_fab():
                 self.caverna1_y += 10
                 self.caverna2_y += 10
-                self.caverna3_y += 10
                 self.bloco_horizontal_y += 10
                 self.bloco_vertical_y += 10
         else:
