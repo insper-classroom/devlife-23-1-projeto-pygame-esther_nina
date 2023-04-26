@@ -2,12 +2,7 @@ import pygame
 import random
 from classe_plataforma import *
 from classe_coins import *
-
-ROXO_ESCURO = (29, 0, 33)
-AZUL_CLARINHO = (200, 245, 247)
-AZUL_BOLA = (115, 209, 208)
-ROSA = (228, 97, 128)
-AZUL_FUNDO = (23, 28, 48)
+from extra import *
 
 class Jogo:
     def __init__(self):
@@ -214,6 +209,8 @@ class TelaFim:
         self.imagem_inicio = pygame.transform.scale(self.imagem_inicio, (700, 700))
         
         self.fonte = pygame.font.Font('assets/Emulogic-zrEw.ttf', 20)
+        self.fontemenor = pygame.font.Font('assets/Emulogic-zrEw.ttf', 11)
+        self.fontemedia = pygame.font.Font('assets/Emulogic-zrEw.ttf', 15)
         self.inicio = TelaInicio()
         self.fim =  True
 
@@ -233,19 +230,19 @@ class TelaFim:
 
     def desenha_tela_fim(self):
         self.window.blit(self.imagem_inicio, (- 87, 0))
-        pygame.draw.rect(self.window, AZUL_CLARINHO, (150, 500, 200, 100))
+        pygame.draw.rect(self.window, BEGE, (150, 100, 200, 100))
         
-        game_over = self.fonte.render('A alma se perdeu...', self.fonte, ROXO_ESCURO)
-        self.window.blit(game_over, (46, 300))
+        game_over = self.fonte.render('A alma se perdeu...', self.fonte, BEGE)
+        self.window.blit(game_over, (50, 500))
 
-        restart = self.fonte.render('Pressione R para recomeçar', self.fonte, ROXO_ESCURO)
-        self.window.blit(restart, (100, 650))
+        restart = self.fontemedia.render('Pressione R para recomeçar', self.fontemedia, LARANJA)
+        self.window.blit(restart, (50, 650))
 
-        score =  self.fonte.render(f'Score: {self.score}', self.fonte, ROXO_ESCURO)
-        self.window.blit(score, (100, 540))
+        score =  self.fonte.render(f'Score: {self.score}', self.fonte, MARROM_AVERMELHADO)
+        self.window.blit(score, (170, 120))
 
-        maior_score = self.fonte.render(f'Highest Score:: {self.maior_score}', self.fonte, ROXO_ESCURO)
-        self.window.blit(maior_score, (100, 600))
+        maior_score = self.fontemenor.render(f'Highest Score: {self.maior_score}', self.fontemenor, MARROM_AVERMELHADO)
+        self.window.blit(maior_score, (155, 170))
         pygame.display.update()
 
     def fim_loop(self): # O loop para a tela de fim
