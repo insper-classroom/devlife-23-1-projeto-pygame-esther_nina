@@ -77,7 +77,8 @@ class Jogo:
             self.bolinha_vel[0] *= - 1
         if self.bolinha_pos[1] - 10 > self.bloco_horizontal_y:
             fim = TelaFim()
-            TelaFim.fim_loop(fim)
+            fim.fim_loop()
+            return False
 
     def alpha_fab(self):
         self.relogio = pygame.time.get_ticks() #em milissegundos
@@ -100,8 +101,7 @@ class Jogo:
         tempo = Jogo.tempo_coins(self)
         if tempo:
             self.all_coins.update()
-                
-
+            
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 return False
@@ -150,14 +150,16 @@ class Jogo:
         if self.caverna1_y >= - 300:
             self.window.blit(self.caverna, (- 500, self.caverna1_y))
             self.window.blit(self.caverna, (0, self.caverna2_y))
-            self.window.blit(self.caverna, (- 500, self.caverna3_y))
+
         elif self.caverna2_y >= - 300:
            self.window.blit(self.caverna, (0, self.caverna2_y))
            self.window.blit(self.caverna, (- 500, self.caverna1_y))
-           self.window.blit(self.caverna, (0, self.caverna3_y))
-        else:
-            self.window.blit(self.caverna, (- 500, self.caverna1_y))
-            self.window.blit(self.caverna, (0, self.caverna2_y))
+        
+        if self.caverna1_y >= 700:
+            self.caverna1_y = - 1300
+        if self.caverna2_y >= 700:
+            self.caverna2_y = - 1300
+        
         # Desenha pedras paredes
         x = 0
         y = self.bloco_vertical_y
@@ -204,10 +206,11 @@ class Jogo:
                 self.desenha()
 
 
+
 class TelaFim:
     def __init__(self):
         pygame.init()
-        pygame.mixer.init()
+        #pygame.mixer.init()
         self.tamanho_tela = [500, 700]
         self.window = pygame.display.set_mode(self.tamanho_tela)
         self.imagem_inicio = pygame.image.load('assets/casa_caiu.jpeg')
@@ -215,19 +218,16 @@ class TelaFim:
         
         self.fonte = pygame.font.Font('assets/Emulogic-zrEw.ttf', 20)
         self.inicio = TelaInicio()
-        self.fim =  True
 
         self.score = 0
         self.maior_score = 0
 
-        
-
-    def atualiza_tela(self):
+    def atualiza_fim(self):
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 return False
             elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_r :
-                    self.inicio.inicio_loop()
+                    self.inicio.fim_loop()
                     return False
         return True
 
@@ -249,13 +249,11 @@ class TelaFim:
         pygame.display.update()
 
     def fim_loop(self): # O loop para a tela de fim
-       while self.fim == True:
-            self.fim = self.atualiza_tela()
-            if self.fim:
+       fim = True
+       while fim:
+            fim = self.atualiza_fim()
+            if fim:
                 self.desenha_tela_fim()
-
-
-
 
 
 
@@ -273,10 +271,9 @@ class TelaInicio:
         self.fonte_footer = pygame.font.Font('assets/PlaymegamesReguler-2OOee.ttf', 20)
         self.jogo = Jogo()
 
-        self.musica = pygame.mixer.music.load('assets/cave music.mp3')
-        pygame.mixer.music.play()
+        #self.musica = pygame.mixer.music.load('assets/cave music.mp3')
+        #pygame.mixer.music.play()
 
-    
     def colisao_ponto_retangulo(self, pontox, pontoy, rectx, recty, rectw, recth):
         if rectx <= pontox <= (rectx + rectw) and recty <= pontoy <= (recty + recth):
             return True
@@ -321,8 +318,4 @@ class TelaInicio:
             inicio = self.atualiza_tela()
             if inicio:
                 self.desenha_tela_inicio()
-
-
-
-
-            
+         
