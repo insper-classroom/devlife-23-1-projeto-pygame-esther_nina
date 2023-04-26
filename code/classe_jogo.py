@@ -22,7 +22,8 @@ class Jogo:
         self.caverna = pygame.transform.scale(pygame.image.load('assets/caverna.jpeg'),(1000 , 1000))    
         self.fonte = pygame.font.Font('assets/Emulogic-zrEw.ttf', 13)
         self.window = pygame.display.set_mode(self.tamanho_tela)
-        
+        self.pontuacao = 0
+
         self.comecou = False
         self.primeiro = 0
         self.primeiro_coins = 0
@@ -63,7 +64,7 @@ class Jogo:
         if self.bolinha_pos[0] - 10 < 50 or self.bolinha_pos[0] + 10 >= 450:
             self.bolinha_vel[0] *= - 1
         if self.bolinha_pos[1] - 10 > self.bloco_horizontal_y:
-            fim = TelaFim()
+            fim = TelaFim(self.pontuacao)
             fim.fim_loop()
             return False
 
@@ -72,6 +73,7 @@ class Jogo:
         subtracao = self.relogio - self.primeiro
         if subtracao >= 100:
             self.primeiro = self.relogio
+            self.pontuacao += 1
             return True
         return False
     
@@ -131,7 +133,7 @@ class Jogo:
             self.bola_quica()
         
         if self.bolinha_pos[1] - 10 > 700:
-            fim = TelaFim()
+            fim = TelaFim(self.pontuacao)
             fim.fim_loop()
             return False
         return True
@@ -175,6 +177,8 @@ class Jogo:
 
         # A bola permanece parada até o jogador dar início
         if self.comecou:
+            pontuacao = self.fonte.render(f'Score: {self.pontuacao}', self.fonte, AZUL_CLARINHO)
+            self.window.blit(pontuacao, (60, 10))
             if self.alpha_fab():
                 self.caverna1_y += 5
                 self.caverna2_y += 5
@@ -202,7 +206,7 @@ class Jogo:
 
 
 class TelaFim:
-    def __init__(self):
+    def __init__(self, pontuacao):
         pygame.init()
         #pygame.mixer.init()
         self.tamanho_tela = [500, 700]
@@ -214,8 +218,8 @@ class TelaFim:
         self.fontemenor = pygame.font.Font('assets/Emulogic-zrEw.ttf', 11)
         self.fontemedia = pygame.font.Font('assets/Emulogic-zrEw.ttf', 15)
         self.inicio = TelaInicio()
-
-        self.score = 0
+        
+        self.score = pontuacao
         self.maior_score = 0
 
     def atualiza_fim(self):
@@ -235,10 +239,10 @@ class TelaFim:
         self.window.blit(game_over, (50, 500))
 
         restart = self.fontemedia.render('Pressione R para recomecar', self.fontemedia, LARANJA)
-        self.window.blit(restart, (50, 650))
+        self.window.blit(restart, (50, 660))
 
-        score =  self.fonte.render(f'Score: {self.score}', self.fonte, MARROM_AVERMELHADO)
-        self.window.blit(score, (170, 120))
+        score =  self.fonte.render(f'Score: {self.score}', self.fontemedia, MARROM_AVERMELHADO)
+        self.window.blit(score, (160, 120))
 
         maior_score = self.fontemenor.render(f'Highest Score: {self.maior_score}', self.fontemenor, MARROM_AVERMELHADO)
         self.window.blit(maior_score, (155, 170))
