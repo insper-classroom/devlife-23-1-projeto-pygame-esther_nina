@@ -16,14 +16,6 @@
       align-items: center;
       padding: 20px 20px;
     }
-    nav {
-      width: 200px;
-      display: flex;
-      justify-content: space-between;
-      background-color: transparent;
-      color: #0D101F;
-      padding: 20px 
-    }
   
   
     body {
@@ -32,13 +24,12 @@
       line-height: 1.5;
       color: #fff;
       background-image: url('caverna 1.jpeg');
-
     }
   
   
   
     h1 {background-color: transparent;
-        padding: 5px; 
+        padding: 0.5%; 
         font-family: 'Emulogic Font';
         font-size: 40px;
       margin-left: 20%;}
@@ -58,23 +49,27 @@
     .como_jogar{
       margin-left: 8%;
       margin-right:8% ;
-      padding: 20px 600px 5px 20px;
-      background: rgba(186, 129, 129, 0.7);
+      padding: 0.5% 20% 0.5% 2%;
+      background: rgba(186, 129, 129, 0.7);;
       border-radius: 20px 20px 20px 20px ;
       font-size: 20px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
     }
+
+    .como_jogar p: second-of-type {
+        margin-left: 40%;
+      }
   
     .gif{ 
-      margin-left: 900px;
+      margin-left: 60%;
       position: absolute;
-      margin-left: 920px;
-      bottom: 130px;
+      bottom: 20%;
       }
     img {border-radius: 50%;}
   
     h2 {margin-left: 43%;
     font-size: 30px;}
+   
    
