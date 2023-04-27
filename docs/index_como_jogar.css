@@ -34,9 +34,19 @@
         font-size: 40px;
       margin-left: 20%;}
     
-    img {float: left;
-    display: flex;}
-  
+    img {
+      display: flex;
+      border-radius: 15px;
+      width: 30%;
+      height: 30%;
+      }
+      
+    .image-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
     footer {
       position: fixed;
       left: 0;
@@ -69,13 +79,6 @@
       margin-left: 6%;
       padding-left: 0%;
     }
-  
-    .gif{ 
-      margin-left: 60%;
-      position: absolute;
-      bottom: 20%;
-      }
-    img {border-radius: 50%;}
   
     h2 {margin-left: 43%;
     font-size: 30px;}
