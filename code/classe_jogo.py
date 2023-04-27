@@ -11,6 +11,7 @@ class Jogo:
         self.clicou =  False
         self.pos_inicial_linha = [0, 0]
         self.pos_final_linha = [0, 0]
+        self.window = pygame.display.set_mode(self.tamanho_tela)
         # Calcular a posição do jogador após pingar
         self.bolinha_pos = [240, 150]
         self.bolinha_vel = [75, 0]
@@ -20,9 +21,9 @@ class Jogo:
         self.pedrinha_img = pygame.transform.scale(pygame.image.load('assets/pedrinha.png'),(40, 40))    
         self.caverna = pygame.transform.scale(pygame.image.load('assets/caverna.jpeg'),(1000 , 1000))    
         self.fonte = pygame.font.Font('assets/Emulogic-zrEw.ttf', 13)
-        self.window = pygame.display.set_mode(self.tamanho_tela)
-        self.pontuacao = 0
+        self.som_moeda =  pygame.mixer.Sound('assets/som moeda.mp3')
         # Variáveis de monitoração do início do jogo 
+        self.pontuacao = 0
         self.comecou = False
         self.primeiro = 0
         self.primeiro_coins = 0
@@ -103,6 +104,8 @@ class Jogo:
                 colidiu = c.colide(self.bolinha_pos)
                 if colidiu:
                     self.all_coins.remove(c)
+                    self.som_moeda.play()
+                   
 
             if tempo:
                 self.all_coins.update()
@@ -197,9 +200,10 @@ class Jogo:
 
         # A bola permanece parada até o jogador dar início
         if self.comecou:
+            # Blita o score
             pontuacao = self.fonte.render(f'Score: {self.pontuacao}', self.fonte, AZUL_CLARINHO)
             self.window.blit(pontuacao, (60, 10))
-
+            # Blita o cofrinho
             with open('moedas.txt', 'r') as moedas:
                 money = moedas.read()
                 cofrinho = self.fonte.render(f' {int(money)}', self.fonte, AZUL_CLARINHO)
@@ -302,8 +306,8 @@ class TelaInicio:
         self.fonte_footer = pygame.font.Font('assets/PlaymegamesReguler-2OOee.ttf', 20)
         self.jogo = Jogo()
 
-        #self.musica = pygame.mixer.music.load('assets/cave music.mp3')
-        #pygame.mixer.music.play()
+        self.musica = pygame.mixer.music.load('assets/cave music.mp3')
+        pygame.mixer.music.play()
 
     def colisao_ponto_retangulo(self, pontox, pontoy, rectx, recty, rectw, recth):
         if rectx <= pontox <= (rectx + rectw) and recty <= pontoy <= (recty + recth):
