@@ -43,7 +43,7 @@
       
     .image-container {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-evenly;
         align-items: center;
       }
 
@@ -79,7 +79,12 @@
       margin-left: 6%;
       padding-left: 0%;
     }
-  
+    
+    .download-titulo {
+      font-family: 'Emulogic Font';
+      color: white
+    }
+
     h2 {margin-left: 43%;
     font-size: 30px;}
    
