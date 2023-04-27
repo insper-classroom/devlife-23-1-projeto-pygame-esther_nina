@@ -58,9 +58,9 @@
       justify-content: space-between;
     }
 
-    .como_jogar p: second-of-type {
+    /* .como_jogar p: second-of-type {
         margin-left: 40%;
-      }
+      } */
   
     .gif{ 
       margin-left: 60%;
