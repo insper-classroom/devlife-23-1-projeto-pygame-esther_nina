@@ -7,6 +7,7 @@
       padding: 30;
       box-sizing: border-box;
     }
+
     
     /* Estilos Gerais */
     header {
@@ -23,17 +24,18 @@
       font-size: 20px;
       line-height: 1.5;
       color: #fff;
-      background-image: url('caverna 1.jpeg');
+      background-image: url('caverna.jpeg');
     }
-  
-  
-  
+
+
     h1 {background-color: transparent;
         padding: 0.5%; 
         font-family: 'Emulogic Font';
         font-size: 40px;
       margin-left: 20%;}
     
+    img {float: left;
+    display: flex;}
   
     footer {
       position: fixed;
