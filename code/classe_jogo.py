@@ -244,6 +244,8 @@ class TelaFim:
         score =  self.fonte.render(f'Score: {self.score}', self.fontemedia, MARROM_AVERMELHADO)
         self.window.blit(score, (150, 120))
 
+        if self.score > self.maior_score:
+            self.maior_score = self.score
         maior_score = self.fontemenor.render(f'Highest Score: {self.maior_score}', self.fontemenor, MARROM_AVERMELHADO)
         self.window.blit(maior_score, (155, 170))
         pygame.display.update()
