@@ -1,5 +1,4 @@
 import pygame
-import random
 from classe_plataforma import *
 from classe_coins import *
 from extra import *
@@ -23,23 +22,34 @@ class Jogo:
         self.fonte = pygame.font.Font('assets/Emulogic-zrEw.ttf', 13)
         self.window = pygame.display.set_mode(self.tamanho_tela)
         self.pontuacao = 0
-
+        # Variáveis de monitoração do início do jogo 
         self.comecou = False
         self.primeiro = 0
         self.primeiro_coins = 0
-        
-        self.caverna1_y = - 300
+    
+        # Variáveis de movimentação do background
+        self.caverna1_y = - 300 
         self.caverna2_y = - 1300
-
         self.bloco_horizontal_y = 650
         self.bloco_vertical_y = - 300
-        self.plataformas_anteriores = []
+
 
         # Criação das moedas
         self.all_coins = pygame.sprite.Group()
-        for _ in range(10):
+        for i in range(100):
             moeda =  Coins()
             self.all_coins.add(moeda)
+
+    # Atualiza o arquivo highest score
+    def atualiza_hscore(self):
+        with open('highestscore.txt', 'r') as hscore:
+            maior_score = hscore.read()
+            if self.pontuacao > int(maior_score):
+                with open('highestscore.txt', 'w') as hscore:
+                    hscore.write(f'{self.pontuacao}')
+
+    # def atualiza_moedas(self):
+
 
     def bola_quica(self):
         # Intervalo de tempo
@@ -49,13 +59,15 @@ class Jogo:
 
         # Calcula a velocidade alterada pela aceleração (gravidade) e o tempo
         self.bolinha_vel[1] += 175 * delta
-
+        
+        # Verifica se a bolinha colide com alguma platafroma
         if Plataformas.colidiu(self.bolinha_pos):
             if Plataformas.verifica_angulo == 'flip':
                 self.bolinha_vel[1] *= - 1
                 self.bolinha_vel[0] *= - 1
             else:
                 self.bolinha_vel[1] *= - 1
+
         # Com isso, calcula as novas posições
         self.bolinha_pos[0] += self.bolinha_vel[0] * delta
         self.bolinha_pos[1] += self.bolinha_vel[1] * delta
@@ -63,10 +75,7 @@ class Jogo:
        # Coloca limites nas paredes
         if self.bolinha_pos[0] - 10 < 50 or self.bolinha_pos[0] + 10 >= 450:
             self.bolinha_vel[0] *= - 1
-        if self.bolinha_pos[1] - 10 > self.bloco_horizontal_y:
-            fim = TelaFim(self.pontuacao)
-            fim.fim_loop()
-            return False
+    
 
     def alpha_fab(self):
         self.relogio = pygame.time.get_ticks() #em milissegundos
@@ -75,7 +84,8 @@ class Jogo:
             self.primeiro = self.relogio
             self.pontuacao += 1
             return True
-        return False
+        else:
+            return False
     
     def tempo_coins(self):
         self.relogio_coins = pygame.time.get_ticks() #em milissegundos
@@ -87,10 +97,18 @@ class Jogo:
 
     def atualiza_estado(self):
         # Muda animação da moeda
-        tempo = Jogo.tempo_coins(self)
-        if tempo:
-            self.all_coins.update()
-            
+        if self.comecou:
+            tempo = Jogo.tempo_coins(self)
+            for c in self.all_coins:
+                colidiu = c.colide(self.bolinha_pos)
+                if colidiu:
+                    self.all_coins.remove(c)
+
+            if tempo:
+                self.all_coins.update()
+
+
+        # Verifica eventos
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 return False
@@ -133,6 +151,8 @@ class Jogo:
             self.bola_quica()
         
         if self.bolinha_pos[1] - 10 > 700:
+            self.atualiza_hscore()
+            del Plataformas.plataformas_anteriores[0]
             fim = TelaFim(self.pontuacao)
             fim.fim_loop()
             return False
@@ -179,6 +199,14 @@ class Jogo:
         if self.comecou:
             pontuacao = self.fonte.render(f'Score: {self.pontuacao}', self.fonte, AZUL_CLARINHO)
             self.window.blit(pontuacao, (60, 10))
+
+            with open('moedas.txt', 'r') as moedas:
+                money = moedas.read()
+                cofrinho = self.fonte.render(f' {int(money)}', self.fonte, AZUL_CLARINHO)
+            self.window.blit(cofrinho, (400, 10))
+            moedinha = pygame.transform.scale(pygame.image.load('assets/coin1.png'), (150,60))
+            self.window.blit(moedinha, (390,11))
+            # Move os objetos na tela
             if self.alpha_fab():
                 self.caverna1_y += 5
                 self.caverna2_y += 5
@@ -194,6 +222,7 @@ class Jogo:
 
         # Desenha coins
         self.all_coins.draw(self.window)
+
         pygame.display.update()
 
     def game_loop(self):
@@ -218,9 +247,9 @@ class TelaFim:
         self.fontemenor = pygame.font.Font('assets/Emulogic-zrEw.ttf', 11)
         self.fontemedia = pygame.font.Font('assets/Emulogic-zrEw.ttf', 15)
         self.inicio = TelaInicio()
-        
+
         self.score = pontuacao
-        self.maior_score = 0
+    
 
     def atualiza_fim(self):
         for evento in pygame.event.get():
@@ -244,9 +273,9 @@ class TelaFim:
         score =  self.fonte.render(f'Score: {self.score}', self.fontemedia, MARROM_AVERMELHADO)
         self.window.blit(score, (150, 120))
 
-        if self.score > self.maior_score:
-            self.maior_score = self.score
-        maior_score = self.fontemenor.render(f'Highest Score: {self.maior_score}', self.fontemenor, MARROM_AVERMELHADO)
+        with open('highestscore.txt', 'r') as hscore:
+                highest_score = hscore.read()
+                maior_score = self.fontemenor.render(f'Highest Score: {int(highest_score)}', self.fontemenor, MARROM_AVERMELHADO)
         self.window.blit(maior_score, (155, 170))
         pygame.display.update()
 
