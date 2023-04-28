@@ -2,6 +2,7 @@ import pygame
 from classe_plataforma import *
 from classe_coins import *
 from extra import *
+from classe_pedras import *
 
 class Jogo:
     def __init__(self):
@@ -105,11 +106,8 @@ class Jogo:
                 if colidiu:
                     self.all_coins.remove(c)
                     self.som_moeda.play()
-                   
-
             if tempo:
                 self.all_coins.update()
-
 
         # Verifica eventos
         for evento in pygame.event.get():
@@ -144,7 +142,6 @@ class Jogo:
                         self.pos_final_linha = [self.coordenadas_final[0], self.coordenadas_final[1]]
                         # Impedir (novamente) que a bolinha entre dentro da parede 
                         if self.pos_final_linha[0] < 50:
-
                             self.pos_final_linha[0] = 50
                         elif self.pos_final_linha[0] > 450:
                             self.pos_final_linha[0] = 450
@@ -223,7 +220,6 @@ class Jogo:
             self.window.blit(inicio, (78, 30))
 
         pygame.draw.circle(self.window, AZUL_BOLA, self.bolinha_pos, 10)
-
         # Desenha coins
         self.all_coins.draw(self.window)
 
