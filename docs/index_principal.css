@@ -1,0 +1,121 @@
+@font-face {
+    font-family: "Emulogic Font";
+    src: url("Emulogic-zrEw.ttf") format('truetype');
+  }
+  * {
+      margin: 5;
+      padding: 30;
+      box-sizing: border-box;
+    }
+    
+    /* Estilos Gerais */
+    header {
+      display: flex;
+      flex-direction: row ;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 20px;
+    }
+  
+  
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-size: 20px;
+      line-height: 1.5;
+      color: #fff;
+      background-image: url('caverna.jpeg');
+    }
+  
+  
+  
+    h1 {background-color: transparent;
+        padding: 0.5%; 
+        font-family: 'Emulogic Font';
+        font-size: 40px;
+      margin-left: 20%;}
+    
+      footer {
+          position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      background-color: #512532;
+      color: white;
+      text-align: center;
+      margin: 0;
+    }
+    
+  
+    .video{ 
+      margin-left: 60%;
+      position: absolute;
+      bottom: 20%;
+    }
+
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 8px solid black;
+        margin-bottom: 10%;
+        background: rgba(24, 22, 58, 0.7);;
+        
+      }
+      
+      th, td {
+        border: 3px solid black;
+        padding: 8px;
+        text-align: left;
+        
+      }
+    
+  
+    h2{display: flex;
+        justify-content: center;
+        font-size: 35px;
+        margin-top: 30%;
+        background: rgba(186, 129, 129, 0.7);
+        border-radius: 20px 20px 20px 20px ;
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+  
+   .Desenvolvedoras{display: flex;
+    justify-content: center;
+    text-decoration: bold;
+    font-size: 35px;
+    background: rgba(186, 129, 129, 0.7);
+    border-radius: 20px 20px 20px 20px ;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 10%;
+    font-weight: bold
+    
+   }
+
+   .Nomes{display: flex;
+flex-direction: column;}
+
+   .Esther{
+    margin-top: 0%;
+    margin-left: 30%;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+   }
+
+   .Nina{
+    margin-top: -2.5%;
+    margin-left: 60%;
+    margin-bottom: 30%;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+   }
+   .foto_esther img{
+    border-radius: 20%;
+    border: 4px solid rgba(24, 22, 58, 1);
+    margin-top: -30%;
+    margin-left: 28.5%;
+    margin-bottom: 10%;
+   }

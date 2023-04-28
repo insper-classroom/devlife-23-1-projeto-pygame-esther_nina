@@ -39,6 +39,7 @@
       border-radius: 15px;
       width: 30%;
       height: 30%;
+      border: 10px solid black;
       }
       
     .image-container {
@@ -82,7 +83,19 @@
     
     .download-titulo {
       font-family: 'Emulogic Font';
-      color: white
+      margin-bottom: 10%;
+      margin-top: 10%;
+      margin-right: 6%;
+
+    }
+    a{
+      color: white;
+      text-decoration: none;
+    }
+    .download-titulo:hover{
+      
+      transform: scale(1.1)
+
     }
 
     h2 {margin-left: 43%;
