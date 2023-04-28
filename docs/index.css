@@ -17,20 +17,16 @@
     padding: 20px 20px;
   }
 
-  img {
-    display: flex;
-    border-radius: 15px;
-    width: 5%;
-    height: 5%;
-    margin-bottom: 20px;
-    }
     
   .menu {
-      display: block;
-      margin: 10 auto;
-      padding: 20px;
-      justify-content: space-evenly;
-      align-items: center;
+    position: fixed;
+    width: 250px;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    padding: 20px;
+    background: linear-gradient(to right, #1c9cf7 50%, transparent 50%);
+     
     }
 
   body {
@@ -62,6 +58,7 @@
   .sobre_jogo{
     margin-left: 8%;
     margin-right:8%;
+    margin-bottom: 40%;
     padding: 0.5% 40% 0.5% 2%;
     background: rgba(186, 129, 129, 0.7);;
     border-radius: 20px 20px 20px 20px ;
@@ -70,14 +67,34 @@
   }
 
   .gif{ 
-    margin-left: 57%;
+    margin-left: 61%;
     position: absolute;
-    bottom: 5%;
-    width: 500%;
-    height: auto;
-    border-radius: 70%; /* nao ta funfando */
+    margin-top: -28%;
+    z-index: 2;
+    
     }
 
-  h2 {margin-left: 43%;
+    .jogar-agora {
+      text-align: right;
+      margin-top: 30%;
+      position: relative;
+      margin-right: 23%;
+    }
+    
+    .jogar-agora button {
+      background-color: #1c9cf7;
+      color: white;
+      font-size: 20px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: 2px solid black;
+      cursor: pointer;
+    }
+
+  img {border-radius: 50%;
+    margin-right: 20%;
+    }
+
+  h2 {margin-left: 35%;
   font-size: 30px;}
  
