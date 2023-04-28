@@ -35,10 +35,15 @@ class Jogo:
         self.bloco_horizontal_y = 650
         self.bloco_vertical_y = - 300
 
+        # Criação de pedras
+        self.all_pedras = pygame.sprite.Group()
+        for i in range(50):
+            pedra = Pedras()
+            self.all_pedras.add(pedra)
 
         # Criação das moedas
         self.all_coins = pygame.sprite.Group()
-        for i in range(100):
+        for i in range(70):
             moeda =  Coins()
             self.all_coins.add(moeda)
 
@@ -98,7 +103,7 @@ class Jogo:
         return False
 
     def atualiza_estado(self):
-        # Muda animação da moeda
+        # Muda animação da moeda e verifica colisão
         if self.comecou:
             tempo = Jogo.tempo_coins(self)
             for c in self.all_coins:
@@ -108,6 +113,14 @@ class Jogo:
                     self.som_moeda.play()
             if tempo:
                 self.all_coins.update()
+            if self.pontuacao >= 300:
+                for pedra in self.all_pedras:
+                    bolinha_tempo,intervalo = pedra.pedra_cai(self.bolinha_tempo)
+                    self.bolinha_tempo = bolinha_tempo
+                    if intervalo >= 5000:
+                        pedra.desenha_pedra(self.window)
+
+            
 
         # Verifica eventos
         for evento in pygame.event.get():
