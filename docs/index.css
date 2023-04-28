@@ -25,7 +25,7 @@
     left: 0;
     bottom: 0;
     padding: 20px;
-    background: linear-gradient(to right, #1c9cf7 50%, transparent 50%);
+    background: linear-gradient(to right, #264772 50%, transparent 50%);
      
     }
 
@@ -82,7 +82,7 @@
     }
     
     .jogar-agora button {
-      background-color: #1c9cf7;
+      background-color: #264772;
       color: white;
       font-size: 20px;
       padding: 10px 20px;
