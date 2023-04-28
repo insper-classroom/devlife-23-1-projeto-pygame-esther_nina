@@ -69,9 +69,10 @@
 
   .gif{ 
     margin-left: 61%;
-    position: absolute;
+    position: relative;
     margin-top: -28%;
     z-index: 2;
+    margin-right: 20%;
     
     }
 
