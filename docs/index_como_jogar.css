@@ -17,6 +17,17 @@
       align-items: center;
       padding: 20px 20px;
     }
+    .menu {
+      position: fixed;
+      width: 250px;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      padding: 20px;
+      background: linear-gradient(to right, #1c9cf7 50%, transparent 50%);
+       
+      }
+  
   
   
     body {
@@ -34,11 +45,12 @@
         font-size: 40px;
       margin-left: 20%;}
     
-    img {
+    .image-container img {
       display: flex;
       border-radius: 15px;
-      width: 30%;
-      height: 30%;
+      
+      width: 20%;
+      height: 20%;
       border: 10px solid black;
       }
       
@@ -46,8 +58,10 @@
         display: flex;
         justify-content: space-evenly;
         align-items: center;
+        margin-left: 10%;
+        margin-right: 8%;
         background: rgba(186, 129, 129, 0.7);
-        border-radius: 40px;
+        border-radius: 4%;
       }
 
     footer {
@@ -62,7 +76,7 @@
     }
     
     .como_jogar{
-      margin-left: 8%;
+      margin-left: 10%;
       margin-right: 8%;
       padding: 0.5% 2%;
       background: rgba(186, 129, 129, 0.7);
@@ -100,7 +114,12 @@
 
     }
 
-    h2 {margin-left: 43%;
+    h2 {margin-left: 44%;
     font-size: 30px;}
+
+
+    .menu  img {border-radius: 50%;
+      margin-right: 20%;
+      }
    
    
