@@ -17,6 +17,7 @@ class Jogo:
         self.bolinha_pos = [240, 150]
         self.bolinha_vel = [75, 0]
         self.bolinha_tempo = 0
+        self.pedra_tempo = 0
         # Loading de imagens e sons
         self.bloco_img =  pygame.transform.scale(pygame.image.load('assets/PEDRA.png'), (50, 50))
         self.pedrinha_img = pygame.transform.scale(pygame.image.load('assets/pedrinha.png'),(40, 40))    
@@ -69,7 +70,7 @@ class Jogo:
         
         # Verifica se a bolinha colide com alguma platafroma
         if Plataformas.colidiu(self.bolinha_pos):
-            if Plataformas.verifica_angulo == 'flip':
+            if Plataformas.verifica_angulo(self.bolinha_vel) == 'flip':
                 self.bolinha_vel[1] *= - 1
                 self.bolinha_vel[0] *= - 1
             else:
@@ -115,9 +116,9 @@ class Jogo:
                 self.all_coins.update()
             if self.pontuacao >= 300:
                 for pedra in self.all_pedras:
-                    bolinha_tempo,intervalo = pedra.pedra_cai(self.bolinha_tempo)
-                    self.bolinha_tempo = bolinha_tempo
-                    if intervalo >= 5000:
+                    pedra_tempo = pedra.pedra_cai(self.pedra_tempo)
+                    self.pedra_tempo = pedra_tempo
+                    if pedra_tempo >= 5000:
                         pedra.desenha_pedra(self.window)
 
             

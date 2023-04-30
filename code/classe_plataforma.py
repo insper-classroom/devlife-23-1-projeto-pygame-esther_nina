@@ -42,22 +42,20 @@ class Plataformas:
             angulo_linha = 180 - (angulo_grau + 90)
 
             if angulo_linha > 70:
-                if vel_bola > 0:
+                if vel_bola[0] > 0:
                     return 'flip'
                 else:
                     return 'continua'
             elif angulo_linha > 45 and angulo_linha < 70:
-                if vel_bola > 0:
+                if vel_bola[0] > 0:
                     return 'flip'
                 else:
                     return 'continua'
             elif angulo_linha < 45 and angulo_linha > 20:
-                if vel_bola > 0:
+                if vel_bola[0] > 0:
                     return 'continua'
                 else:
                     return 'flip'
             else:
-                if vel_bola > 0:
-                    return 'continua'
-                else:
-                    return 'flip'
+                return 'continua'
+               
