@@ -72,12 +72,13 @@ class Jogo:
         self.bolinha_vel[1] += 175 * delta
         
         # Verifica se a bolinha colide com alguma platafroma
-        if Plataformas.colidiu(self.bolinha_pos):
-            if Plataformas.verifica_angulo(self.bolinha_vel) == 'flip':
-                self.bolinha_vel[1] *= - 1
-                self.bolinha_vel[0] *= - 1
-            else:
-                self.bolinha_vel[1] *= - 1
+        colidiu = Plataformas.colidiu(self.bolinha_pos)
+        verifica =  Plataformas.verifica_angulo(self.bolinha_vel)
+        if colidiu and verifica == 'flip':
+            self.bolinha_vel[1] *= - 1
+            self.bolinha_vel[0] *= - 1
+        elif colidiu and verifica == 'continua':
+            self.bolinha_vel[1] *= - 1
 
         # Com isso, calcula as novas posições
         self.bolinha_pos[0] += self.bolinha_vel[0] * delta

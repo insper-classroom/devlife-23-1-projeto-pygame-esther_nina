@@ -9,22 +9,40 @@ class Plataformas:
         # Criador das nossas linhas, nas quais a bolinha pulará em
         self.coordenadas_comeco = coordenada_inicio
         self.coordenadas_final = coordenada_final
+        self.vertices =  (coordenada_inicio, coordenada_final, (coordenada_final[0], coordenada_final[1] - 5), (coordenada_inicio[0], coordenada_inicio[1] - 5))
         Plataformas.plataformas_anteriores.append(self)
 
     def desenha_plataforma(window):
         for plataforma in Plataformas.plataformas_anteriores:
             pygame.draw.polygon(window, plataforma.cor, (plataforma.coordenadas_comeco, plataforma.coordenadas_final, (plataforma.coordenadas_final[0], plataforma.coordenadas_final[1] - 5), (plataforma.coordenadas_comeco[0], plataforma.coordenadas_comeco[1] - 5)))
 
-    def colidiu(bola_pos): # Cálculo de interssecção ponto e reta, porém limitada, para as colisões com plataformas
+    def colidiu(bola_pos):
         for p in Plataformas.plataformas_anteriores:
-            raio = 10
-            a = - ((p.coordenadas_comeco[1] - p.coordenadas_final[1])/(p.coordenadas_comeco[0] - p.coordenadas_final[0]))
-            b = 1
-            c = - (a * p.coordenadas_comeco[0] + p.coordenadas_comeco[1])
-            dist = abs(a * bola_pos[0] + b * bola_pos[1] + c) / math.sqrt(a ** 2 + b ** 2)
-            if dist <= raio and bola_pos[0] < p.coordenadas_final[0] and bola_pos[0] > p.coordenadas_comeco[0] :
-                return True
+            # Coordenadas dos vértices da plataforma
+                vertices = p.vertices
+                
+                # Verifica colisão com cada lado da plataforma
+                for i in range(len(vertices)):
+                    p1 = vertices[i]
+                    p2 = vertices[(i+1) % len(vertices)]
+                    
+                    # Verifica se a bola está dentro dos limites do segmento de reta
+                    if (p1[0] <= bola_pos[0] <= p2[0] or p2[0] <= bola_pos[0] <= p1[0]) and \
+                    (p1[1] <= bola_pos[1] <= p2[1] or p2[1] <= bola_pos[1] <= p1[1]):
+                        
+                        # Cálculo da equação da reta que contém o segmento de reta
+                        a = p1[1] - p2[1]
+                        b = p2[0] - p1[0]
+                        c = p1[0]*p2[1] - p2[0]*p1[1]
+                        
+                        # Distância da bola até a reta que contém o segmento de reta
+                        dist = abs(a * bola_pos[0] + b * bola_pos[1] + c) / math.sqrt(a ** 2 + b ** 2)
+                        
+                        # Se a bola está dentro do raio da plataforma, houve colisão
+                        if dist <= 5:
+                            return True
         return False
+    
 
     def verifica_linhas(): # Deletar plataformas anteriores
         linhas = len(Plataformas.plataformas_anteriores)
@@ -44,10 +62,8 @@ class Plataformas:
             angulo_linha = 180 - (angulo_grau + 90)
 
             if angulo_linha > 70:
-                if vel_bola[0] > 0:
-                    return 'flip'
-                else:
-                    return 'continua'
+                return 'flip'
+            
             elif angulo_linha > 45 and angulo_linha < 70:
                 if vel_bola[0] > 0:
                     return 'flip'
