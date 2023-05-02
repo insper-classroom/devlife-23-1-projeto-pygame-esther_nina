@@ -24,11 +24,14 @@ class Jogo:
         self.caverna = pygame.transform.scale(pygame.image.load('assets/caverna.jpeg'),(1000 , 1000))    
         self.fonte = pygame.font.Font('assets/Emulogic-zrEw.ttf', 13)
         self.som_moeda =  pygame.mixer.Sound('assets/som moeda.mp3')
+        img = pygame.image.load('assets/pedrinha.png')
+        self.pedrinha = pygame.transform.scale(img, (150, 100))
         # Variáveis de monitoração do início do jogo 
         self.pontuacao = 0
         self.comecou = False
         self.primeiro = 0
         self.primeiro_coins = 0
+        self.intervalo = 100
     
         # Variáveis de movimentação do background
         self.caverna1_y = - 300 
@@ -37,14 +40,11 @@ class Jogo:
         self.bloco_vertical_y = - 300
 
         # Criação de pedras
-        self.all_pedras = pygame.sprite.Group()
-        for i in range(50):
-            pedra = Pedras()
-            self.all_pedras.add(pedra)
+        self.pedrinhas = []
 
         # Criação das moedas
         self.all_coins = pygame.sprite.Group()
-        for i in range(70):
+        for _ in range(70):
             moeda =  Coins()
             self.all_coins.add(moeda)
 
@@ -56,8 +56,11 @@ class Jogo:
                 with open('highestscore.txt', 'w') as hscore:
                     hscore.write(f'{self.pontuacao}')
 
-    # def atualiza_moedas(self):
-
+    def cria_pedras(self):
+        pedra = Pedras()
+        coordenadas = pedra.coordenadas
+        velocidade = pedra.velocidade
+        self.pedrinhas.append([coordenadas, velocidade])
 
     def bola_quica(self):
         # Intervalo de tempo
@@ -114,14 +117,10 @@ class Jogo:
                     self.som_moeda.play()
             if tempo:
                 self.all_coins.update()
-            if self.pontuacao >= 300:
-                for pedra in self.all_pedras:
-                    pedra_tempo = pedra.pedra_cai(self.pedra_tempo)
-                    self.pedra_tempo = pedra_tempo
-                    if pedra_tempo >= 5000:
-                        pedra.desenha_pedra(self.window)
-
-            
+            if self.pontuacao >= 100:
+                for pedra in self.pedrinhas:
+                    classe = Pedras()
+                    classe.pedra_cai(pedra[0], pedra[1])
 
         # Verifica eventos
         for evento in pygame.event.get():
@@ -232,7 +231,15 @@ class Jogo:
         else:
             inicio = self.fonte.render('Aperte espaco para comecar', self.fonte, AZUL_CLARINHO)
             self.window.blit(inicio, (78, 30))
-
+        
+        if self.pontuacao >= 100:
+            if self.pontuacao >= self.intervalo:
+                self.cria_pedras()
+                self.intervalo += 10
+            for pedra in self.pedrinhas:
+                x, y = pedra[0] 
+                self.window.blit(self.pedrinha, (x, y))
+ 
         pygame.draw.circle(self.window, AZUL_BOLA, self.bolinha_pos, 10)
         # Desenha coins
         self.all_coins.draw(self.window)

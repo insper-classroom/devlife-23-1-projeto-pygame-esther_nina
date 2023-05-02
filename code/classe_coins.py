@@ -17,7 +17,7 @@ class Coins(pygame.sprite.Sprite):
         self.frame = 0
         self.image = self.animation[self.frame]
         self.rect = self.image.get_rect()
-        self.rect.x = random.randint(50, 350)
+        self.rect.x = random.randint(50, 420)
         self.rect.y = random.randint(-4000, 450)
 
 
@@ -30,8 +30,6 @@ class Coins(pygame.sprite.Sprite):
                 moedas.write(f'{qntd_moedas}')
             return True
         return False
-
-
 
     def update(self):
         self.frame += 1

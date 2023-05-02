@@ -1,29 +1,21 @@
 import pygame
 import random 
 
-class Pedras(pygame.sprite.Sprite):
+class Pedras():
     def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load('assets/pedrinha.png')
-        self.pedrinha = pygame.transform.scale(img, (150,100))
         x = random.randint(50, 450)
-        y = random.randint(- 1300, 0)
-        self.coordenadas = [x, y]
+        self.coordenadas = [x, - 100]
         self.velocidade = [10, 100]
-        
+        self.pedra_tempo = - 1
+        self.pedras = []
 
-    def pedra_cai(self, pedra_tempo):
+    def pedra_cai(self, posicao, velocidade):
         hm = pygame.time.get_ticks()
-        delta = (hm - pedra_tempo) / 1000
-        pedra_tempo = hm
+        if self.pedra_tempo != - 1:
+            delta = (hm - self.pedra_tempo) / 1000
 
-        self.velocidade[1] += delta * 1000
-        
-        self.coordenadas[0] += self.velocidade[0] * delta
-        self.coordenadas[1] += self.velocidade[1] * delta
-        return pedra_tempo
+            velocidade[1] += delta * 10
 
-    def desenha_pedra(self,window):
-        window.blit(self.pedrinha, [self.coordenadas[0], self.coordenadas[1]])
-            
-
+            posicao[0] += velocidade[0] * delta
+            posicao[1] += velocidade[1] * delta
+        self.pedra_tempo = hm

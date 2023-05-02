@@ -36,6 +36,8 @@ class Plataformas:
             cateto_oposto = abs(plataforma.coordenadas_final[0] - plataforma.coordenadas_comeco[0])
             cateto_adjacente = abs (plataforma.coordenadas_final[1] - plataforma.coordenadas_comeco[1])
             # Cálculos trigonométricos
+            if cateto_adjacente == 0:
+                cateto_adjacente = 0.0000000000000001
             tangente = cateto_oposto / cateto_adjacente
             angulo_rad = math.atan(tangente)
             angulo_grau = math.degrees(angulo_rad)
