@@ -24,7 +24,7 @@ class Plataformas:
                 # Verifica colisão com cada lado da plataforma
                 for i in range(len(vertices)):
                     p1 = vertices[i]
-                    p2 = vertices[(i+1) % len(vertices)]
+                    p2 = vertices[(i + 1) % len(vertices)]
                     
                     # Verifica se a bola está dentro dos limites do segmento de reta
                     if (p1[0] <= bola_pos[0] <= p2[0] or p2[0] <= bola_pos[0] <= p1[0]) and \
@@ -33,7 +33,7 @@ class Plataformas:
                         # Cálculo da equação da reta que contém o segmento de reta
                         a = p1[1] - p2[1]
                         b = p2[0] - p1[0]
-                        c = p1[0]*p2[1] - p2[0]*p1[1]
+                        c = p1[0] * p2[1] - p2[0] * p1[1]
                         
                         # Distância da bola até a reta que contém o segmento de reta
                         dist = abs(a * bola_pos[0] + b * bola_pos[1] + c) / math.sqrt(a ** 2 + b ** 2)

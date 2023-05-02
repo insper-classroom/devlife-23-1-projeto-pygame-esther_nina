@@ -58,9 +58,7 @@ class Jogo:
 
     def cria_pedras(self):
         pedra = Pedras()
-        coordenadas = pedra.coordenadas
-        velocidade = pedra.velocidade
-        self.pedrinhas.append([coordenadas, velocidade])
+        self.pedrinhas.append(pedra)
 
     def bola_quica(self):
         # Intervalo de tempo
@@ -120,8 +118,9 @@ class Jogo:
                 self.all_coins.update()
             if self.pontuacao >= 100:
                 for pedra in self.pedrinhas:
-                    classe = Pedras()
-                    classe.pedra_cai(pedra[0], pedra[1])
+                    pedra.pedra_cai()
+                    if pedra.colisao_bola(self.bolinha_pos):
+                        print('sim')
 
         # Verifica eventos
         for evento in pygame.event.get():
@@ -163,7 +162,7 @@ class Jogo:
                             self.pos_final_linha[1] =  650
         if self.comecou:
             self.bola_quica()
-        
+
         if self.bolinha_pos[1] - 10 > 700:
             self.atualiza_hscore()
             del Plataformas.plataformas_anteriores[0]
@@ -171,6 +170,7 @@ class Jogo:
             fim.fim_loop()
             return False
         return True
+
 
     def desenha(self):
         self.window.fill(AZUL_FUNDO)
@@ -218,9 +218,9 @@ class Jogo:
             with open('moedas.txt', 'r') as moedas:
                 money = moedas.read()
                 cofrinho = self.fonte.render(f' {int(money)}', self.fonte, AZUL_CLARINHO)
-            self.window.blit(cofrinho, (400, 10))
-            moedinha = pygame.transform.scale(pygame.image.load('assets/coin1.png'), (150,60))
-            self.window.blit(moedinha, (390,11))
+            self.window.blit(cofrinho, (390, 10))
+            moedinha = pygame.transform.scale(pygame.image.load('assets/coin1.png'), (150, 60))
+            self.window.blit(moedinha, (380, 11))
             # Move os objetos na tela
             if self.alpha_fab():
                 self.caverna1_y += 5
@@ -236,10 +236,9 @@ class Jogo:
         if self.pontuacao >= 100:
             if self.pontuacao >= self.intervalo:
                 self.cria_pedras()
-                self.intervalo += 10
+                self.intervalo += 30
             for pedra in self.pedrinhas:
-                x, y = pedra[0] 
-                self.window.blit(self.pedrinha, (x, y))
+                self.window.blit(self.pedrinha, (pedra.coordenadas[0], pedra.coordenadas[1]))
  
         pygame.draw.circle(self.window, AZUL_BOLA, self.bolinha_pos, 10)
         # Desenha coins
