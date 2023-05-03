@@ -20,20 +20,19 @@ class Jogo:
         self.pedra_tempo = 0
         # Loading de imagens e sons
         self.bloco_img =  pygame.transform.scale(pygame.image.load('assets/PEDRA.png'), (50, 50))
-        self.pedrinha = pygame.transform.scale(pygame.image.load('assets/pedrinha.png'),(100, 200))    
+        self.pedrinha = pygame.transform.scale(pygame.image.load('assets/pedrinha.png'),(50, 100))    
         self.caverna = pygame.transform.scale(pygame.image.load('assets/caverna.jpeg'),(1000 , 1000))    
         self.fonte = pygame.font.Font('assets/Emulogic-zrEw.ttf', 13)
         self.som_moeda =  pygame.mixer.Sound('assets/som moeda.mp3')
 
-
-        self.explosao1 = pygame.transform.scale(pygame.image.load('assets/ex1.png'),(100, 200)) 
-        self.explosao2 = pygame.transform.scale(pygame.image.load('assets/ex2.png'),(100, 200)) 
-        self.explosao3 = pygame.transform.scale(pygame.image.load('assets/ex3.png'),(100, 200)) 
-        self.explosao4 = pygame.transform.scale(pygame.image.load('assets/ex4.png'),(100, 200)) 
-        self.explosao5 = pygame.transform.scale(pygame.image.load('assets/ex5.png'),(100, 200)) 
-        self.explosao6 = pygame.transform.scale(pygame.image.load('assets/ex6.png'),(100, 200)) 
-        self.explosao7 = pygame.transform.scale(pygame.image.load('assets/ex7.png'),(100, 200)) 
-        self.explosao8 = pygame.transform.scale(pygame.image.load('assets/ex8.png'),(100, 200)) 
+        self.explosao1 = pygame.transform.scale(pygame.image.load('assets/ex1.png'),(50, 100)) 
+        self.explosao2 = pygame.transform.scale(pygame.image.load('assets/ex2.png'),(50, 100)) 
+        self.explosao3 = pygame.transform.scale(pygame.image.load('assets/ex3.png'),(50, 100)) 
+        self.explosao4 = pygame.transform.scale(pygame.image.load('assets/ex4.png'),(50, 100)) 
+        self.explosao5 = pygame.transform.scale(pygame.image.load('assets/ex5.png'),(50, 100)) 
+        self.explosao6 = pygame.transform.scale(pygame.image.load('assets/ex6.png'),(50, 100)) 
+        self.explosao7 = pygame.transform.scale(pygame.image.load('assets/ex7.png'),(50, 100)) 
+        self.explosao8 = pygame.transform.scale(pygame.image.load('assets/ex8.png'),(50, 100)) 
 
         self.explosao = [self.explosao1, self.explosao2,self.explosao3,self.explosao4,self.explosao5,self.explosao6,self.explosao7,self.explosao8]
         self.indice_explosao = 0
@@ -343,7 +342,6 @@ class TelaInicio:
         self.fonte_inicio = pygame.font.Font('assets/Emulogic-zrEw.ttf', 20)
         self.fonte_titulo = pygame.font.Font('assets/PlaymegamesReguler-2OOee.ttf', 45)
         self.fonte_footer = pygame.font.Font('assets/PlaymegamesReguler-2OOee.ttf', 20)
-        self.jogo = Jogo()
 
         self.musica = pygame.mixer.music.load('assets/cave music.mp3')
         pygame.mixer.music.play()
@@ -362,12 +360,18 @@ class TelaInicio:
                 self.coordenadas_clique = pygame.mouse.get_pos() 
                 # Se o jogador clicou no retângulo 'inicio', o jogo se inicia
                 if self.colisao_ponto_retangulo(self.coordenadas_clique[0], self.coordenadas_clique[1], 150, 500, 200, 100): 
-                    self.jogo.game_loop()
+                    jogo = Jogo()
+                    jogo.game_loop()
+                    return False
+                if self.colisao_ponto_retangulo(self.coordenadas_clique[0], self.coordenadas_clique[1], 150, 615, 180, 70):
+                    instrucoes = TelaInstrucoes()
+                    instrucoes.instrucoes_loop()
                     return False
         return True
 
     def desenha_tela_inicio(self):
         self.window.blit(self.imagem_inicio, (- 87, 0))
+
         pygame.draw.rect(self.window, AZUL_CLARINHO, (150, 500, 200, 100))
         # Desenhando o botão e as suas limitações
         pygame.draw.rect(self.window, ROSA, (150, 500, 200, 10))
@@ -377,6 +381,9 @@ class TelaInicio:
         
         inicio = self.fonte_inicio.render('Inicio', self.fonte_inicio, ROXO_ESCURO)
         self.window.blit(inicio, (190, 540))
+
+        instrucoes = self.fonte_inicio.render('Instrucoes', self.fonte_inicio, AZUL_CLARINHO)
+        self.window.blit(instrucoes, (150, 615))
 
         titulo = self.fonte_titulo.render('Platforms of Salvation', self.fonte_titulo, ROXO_ESCURO)
         self.window.blit(titulo, (46, 50))
@@ -392,4 +399,59 @@ class TelaInicio:
             inicio = self.atualiza_tela()
             if inicio:
                 self.desenha_tela_inicio()
-         
+   
+class TelaInstrucoes():
+    def __init__(self):
+        self.tamanho_tela = [500, 700]
+        self.window = pygame.display.set_mode(self.tamanho_tela)
+        self.texto = pygame.font.Font('assets/Emulogic-zrEw.ttf', 10)
+        self.fonte_titulo = pygame.font.Font('assets/PlaymegamesReguler-2OOee.ttf', 40)
+        self.jogo = Jogo()
+        self.tela_inicio = TelaInicio()
+
+    def atualiza_tela(self):
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                return False
+            elif evento.type == pygame.MOUSEBUTTONDOWN:
+                coordenadas_clique = pygame.mouse.get_pos() 
+                # Se o jogador clicou no 'voltar'
+                if self.tela_inicio.colisao_ponto_retangulo(coordenadas_clique[0], coordenadas_clique[1], 190, 575, 185, 100): 
+                    self.tela_inicio.inicio_loop()
+                    return False
+        return True
+    
+    def desenha_tela_instrucoes(self):
+        self.window.fill(AZUL_CLARINHO)
+
+        instrucoes = self.fonte_titulo.render('Instrucoes', self.fonte_titulo, AZUL_FUNDO)
+        self.window.blit(instrucoes, (150, 60))
+
+        polpa = self.texto.render('O jogo consiste em subir em plataformas,', self.texto, AZUL_FUNDO)
+        self.window.blit(polpa, (45, 160))
+
+        polpa2 = self.texto.render('pegar moedas e desviar das pedras', self.texto, AZUL_FUNDO)
+        self.window.blit(polpa2, (70, 180))
+
+        para_jogar = self.texto.render('Para jogar, eh apenas necessario clicar o mouse,', self.texto, AZUL_FUNDO)
+        self.window.blit(para_jogar, (15, 250))
+
+        para_jogar2 = self.texto.render('puxar e solta-lo para criar a sua plataforma,', self.texto, AZUL_FUNDO)
+        self.window.blit(para_jogar2, (30, 275))
+
+        para_jogar3 = self.texto.render('fazendo, com que a bolinha pule e suba', self.texto, AZUL_FUNDO)
+        self.window.blit(para_jogar3, (55, 300))
+
+        cautela = self.texto.render('Pedras comecarao a cair, entao tome cuidado!', self.texto, AZUL_FUNDO)
+        self.window.blit(cautela, (30, 400))
+
+        voltar = self.fonte_titulo.render('Voltar', self.fonte_titulo, AZUL_FUNDO)
+        self.window.blit(voltar, (190, 575))
+        pygame.display.update()
+
+    def instrucoes_loop(self): # O loop para a tela início
+        instrucoes = True
+        while instrucoes:
+            instrucoes = self.atualiza_tela()
+            if instrucoes:
+                self.desenha_tela_instrucoes()
