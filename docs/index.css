@@ -76,14 +76,14 @@
     
     }
 
-    .jogar-agora {
+  .jogar-agora {
       text-align: right;
       margin-top: 30%;
       position: relative;
       margin-right: 23%;
     }
     
-    .jogar-agora button {
+  .jogar-agora button {
       background-color: #597D9F;
       color: white;
       font-size: 20px;
@@ -100,3 +100,8 @@
   h2 {margin-left: 35%;
   font-size: 30px;}
  
+  .video { position:absolute;
+  left: 50%;
+  top: 50%;
+ 
+}
