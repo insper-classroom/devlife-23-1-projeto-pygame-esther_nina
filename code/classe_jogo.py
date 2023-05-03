@@ -20,12 +20,24 @@ class Jogo:
         self.pedra_tempo = 0
         # Loading de imagens e sons
         self.bloco_img =  pygame.transform.scale(pygame.image.load('assets/PEDRA.png'), (50, 50))
-        self.pedrinha_img = pygame.transform.scale(pygame.image.load('assets/pedrinha.png'),(40, 40))    
+        self.pedrinha = pygame.transform.scale(pygame.image.load('assets/pedrinha.png'),(100, 200))    
         self.caverna = pygame.transform.scale(pygame.image.load('assets/caverna.jpeg'),(1000 , 1000))    
         self.fonte = pygame.font.Font('assets/Emulogic-zrEw.ttf', 13)
         self.som_moeda =  pygame.mixer.Sound('assets/som moeda.mp3')
-        img = pygame.image.load('assets/pedrinha.png')
-        self.pedrinha = pygame.transform.scale(img, (150, 100))
+
+
+        self.explosao1 = pygame.transform.scale(pygame.image.load('assets/ex1.png'),(100, 200)) 
+        self.explosao2 = pygame.transform.scale(pygame.image.load('assets/ex2.png'),(100, 200)) 
+        self.explosao3 = pygame.transform.scale(pygame.image.load('assets/ex3.png'),(100, 200)) 
+        self.explosao4 = pygame.transform.scale(pygame.image.load('assets/ex4.png'),(100, 200)) 
+        self.explosao5 = pygame.transform.scale(pygame.image.load('assets/ex5.png'),(100, 200)) 
+        self.explosao6 = pygame.transform.scale(pygame.image.load('assets/ex6.png'),(100, 200)) 
+        self.explosao7 = pygame.transform.scale(pygame.image.load('assets/ex7.png'),(100, 200)) 
+        self.explosao8 = pygame.transform.scale(pygame.image.load('assets/ex8.png'),(100, 200)) 
+
+        self.explosao = [self.explosao1, self.explosao2,self.explosao3,self.explosao4,self.explosao5,self.explosao6,self.explosao7,self.explosao8]
+        self.indice_explosao = 0
+       
         # Variáveis de monitoração do início do jogo 
         self.pontuacao = 0
         self.comecou = False
@@ -44,7 +56,7 @@ class Jogo:
 
         # Criação das moedas
         self.all_coins = pygame.sprite.Group()
-        for _ in range(70):
+        for _ in range(40):
             moeda =  Coins()
             self.all_coins.add(moeda)
 
@@ -120,7 +132,17 @@ class Jogo:
                 for pedra in self.pedrinhas:
                     pedra.pedra_cai()
                     if pedra.colisao_bola(self.bolinha_pos):
-                        print('sim')
+                        self.pedrinhas.remove(pedra)
+                        while self.indice_explosao < len(self.explosao):
+                            pedra.desenha_explosao(self.window, self.explosao, self.indice_explosao)
+                            self.indice_explosao += 1
+
+
+                        self.atualiza_hscore()
+                        del Plataformas.plataformas_anteriores[0]
+                        fim = TelaFim(self.pontuacao)
+                        fim.fim_loop()
+                        return False
 
         # Verifica eventos
         for evento in pygame.event.get():
@@ -170,8 +192,7 @@ class Jogo:
             fim.fim_loop()
             return False
         return True
-
-
+        
     def desenha(self):
         self.window.fill(AZUL_FUNDO)
         if self.caverna1_y >= - 300:
@@ -284,6 +305,7 @@ class TelaFim:
     def desenha_tela_fim(self):
         self.window.blit(self.imagem_inicio, (- 87, 0))
         pygame.draw.rect(self.window, BEGE, (140, 100, 220, 100))
+
         
         game_over = self.fonte.render('A alma se perdeu...', self.fonte, BEGE)
         self.window.blit(game_over, (50, 500))
@@ -291,12 +313,12 @@ class TelaFim:
         restart = self.fontemedia.render('Pressione R para recomecar', self.fontemedia, LARANJA)
         self.window.blit(restart, (50, 660))
 
-        score =  self.fonte.render(f'Score: {self.score}', self.fontemedia, MARROM_AVERMELHADO)
+        score =  self.fonte.render(f'Score:{self.score}', self.fontemedia, MARROM_AVERMELHADO)
         self.window.blit(score, (150, 120))
 
         with open('highestscore.txt', 'r') as hscore:
                 highest_score = hscore.read()
-                maior_score = self.fontemenor.render(f'Highest Score: {int(highest_score)}', self.fontemenor, MARROM_AVERMELHADO)
+                maior_score = self.fontemenor.render(f'Highest Score:{int(highest_score)}', self.fontemenor, MARROM_AVERMELHADO)
         self.window.blit(maior_score, (155, 170))
         pygame.display.update()
 
